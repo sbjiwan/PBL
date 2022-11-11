@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:foregroundTint="#5CB134">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <Button
+            android:layout_width="274dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#F6E751"
+            android:drawableLeft="@drawable/kakaoxml"
+            android:text="카카오로 로그인하기"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Button
+            android:layout_width="274dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#05C134"
+            android:drawableLeft="@drawable/naverxml"
+            android:text="네이버로 로그인하기"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Button
+            android:layout_width="274dp"
+            android:layout_height="50dp"
+            android:backgroundTint="#FFFFFF"
+            android:drawableLeft="@drawable/googlexml"
+            android:text="구글로 로그인하기"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="#00FF0000"
+            android:backgroundTint="#FFFFFF"
+            android:text="이메일로 로그인하기"
+            android:textColor="#777777"
+            android:textSize="12sp" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="#00FF0000"
+            android:text="회원가입"
+            android:textColor="#777777"
+            android:textSize="12sp" />
+
+    </LinearLayout>
+</LinearLayout>
