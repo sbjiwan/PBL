@@ -14,7 +14,7 @@
             android:layout_width="274dp"
             android:layout_height="50dp"
             android:background="#CCCCCC"
-            android:text="abc123@email.com"
+            android:hint="@string/email"
             android:textColor="#777777"
             android:textSize="16sp"
             android:layout_margin="1dp"/>
@@ -23,7 +23,7 @@
             android:layout_width="274dp"
             android:layout_height="50dp"
             android:background="#CCCCCC"
-            android:text="n자 이상의 비밀번호"
+            android:hint="@string/password"
             android:textColor="#777777"
             android:textSize="16sp"
             android:layout_margin="1dp"/>
@@ -33,17 +33,17 @@
             android:layout_height="36dp"
             android:background="#00FF0000"
             android:backgroundTint="#FFFFFF"
-            android:text="로그인"
+            android:text="@string/log_in"
             android:textColor="#777777"
             android:textSize="12sp" />
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="36dp"
-            android:background="#00FF0000"
-            android:text="이메일 / 비밀번호 찾기"
-            android:textColor="#777777"
-            android:textSize="12sp" />
+<!--        <Button-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="36dp"-->
+<!--            android:background="#00FF0000"-->
+<!--            android:text="비밀번호 찾기"-->
+<!--            android:textColor="#777777"-->
+<!--            android:textSize="12sp" />-->
 
     </LinearLayout>
 </LinearLayout>
