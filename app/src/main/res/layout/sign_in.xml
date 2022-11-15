@@ -60,6 +60,7 @@
             android:textSize="12sp" />
 
         <Button
+            android:id="@+id/sign_in"
             android:layout_width="wrap_content"
             android:layout_height="36dp"
             android:backgroundTint="#EEEEEE"

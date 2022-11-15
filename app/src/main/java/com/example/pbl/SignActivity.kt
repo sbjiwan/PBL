@@ -6,14 +6,16 @@ import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 
 class SignActivity : AppCompatActivity() {
-    lateinit var button : Button
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sign_in)
 
-        button = findViewById<Button>(R.id.back)
-        button.setOnClickListener {
+        findViewById<Button>(R.id.back).setOnClickListener {
             val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+        }
+        findViewById<Button>(R.id.sign_in).setOnClickListener {
+            val intent = Intent(this, UserInfoActivity::class.java)
             startActivity(intent)
         }
     }
