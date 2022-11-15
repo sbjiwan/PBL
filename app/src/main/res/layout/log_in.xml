@@ -10,6 +10,12 @@
         android:gravity="center"
         android:orientation="vertical">
 
+        <Button
+            android:id="@+id/back"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="뒤로" />
+
         <EditText
             android:layout_width="274dp"
             android:layout_height="50dp"
@@ -37,7 +43,7 @@
             android:textColor="#777777"
             android:textSize="12sp" />
 
-<!--        <Button-->
+        <!--        <Button-->
 <!--            android:layout_width="wrap_content"-->
 <!--            android:layout_height="36dp"-->
 <!--            android:background="#00FF0000"-->
