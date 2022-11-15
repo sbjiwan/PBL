@@ -1,2 +1,3 @@
-.gradle/*
+.gradle/7.4/fileHashes/*
 .idea/misc.xml
+local.properties

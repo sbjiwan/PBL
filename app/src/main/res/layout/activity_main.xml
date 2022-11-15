@@ -38,8 +38,9 @@
             android:textSize="16sp" />
 
         <Button
+            android:id="@+id/login"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:background="#00FF0000"
             android:backgroundTint="#FFFFFF"
             android:text="@string/log_in"
@@ -47,8 +48,9 @@
             android:textSize="12sp" />
 
         <Button
+            android:id="@+id/sign_in"
             android:layout_width="wrap_content"
-            android:layout_height="36dp"
+            android:layout_height="48dp"
             android:background="#00FF0000"
             android:text="@string/sign_in"
             android:textColor="#777777"
