@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "762123665675",
+    "project_id": "pbl-database-fb664",
+    "storage_bucket": "pbl-database-fb664.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:762123665675:android:2b9141ea633ce86500620e",
+        "android_client_info": {
+          "package_name": "com.example.pbl"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "762123665675-d4diiu3itlb25aav9lma6hnlu2hmtcb8.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDrSuc3jRvcFBIDt9x09j9J8Xz0PwQviVM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "762123665675-d4diiu3itlb25aav9lma6hnlu2hmtcb8.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

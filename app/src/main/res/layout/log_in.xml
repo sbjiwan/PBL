@@ -17,6 +17,7 @@
             android:text="뒤로" />
 
         <EditText
+            android:id="@+id/id_field"
             android:layout_width="274dp"
             android:layout_height="50dp"
             android:background="#CCCCCC"
@@ -26,6 +27,7 @@
             android:layout_margin="1dp"/>
 
         <EditText
+            android:id="@+id/password_field"
             android:layout_width="274dp"
             android:layout_height="50dp"
             android:background="#CCCCCC"
