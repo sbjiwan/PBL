@@ -26,8 +26,10 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-        <activity android:name=".LoginActivity"></activity>
-        <activity android:name=".SignActivity"></activity>
+        <activity android:name=".LoginActivity"
+            android:parentActivityName=".MainActivity"/>
+        <activity android:name=".SignActivity"
+            android:parentActivityName=".LoginActivity"/>
         <activity android:name=".UserInfoActivity"></activity>
         <activity android:name=".UserEditActivity"></activity>
         <activity android:name=".ShopListActivity"></activity>

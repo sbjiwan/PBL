@@ -15,10 +15,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.log_in)
 
-        findViewById<Button>(R.id.back).setOnClickListener {
-            val intent = Intent(this, MainActivity::class.java)
-            startActivity(intent)
-        }
+        supportActionBar?.setDisplayHomeAsUpEnabled(true);
+        
         findViewById<Button>(R.id.login).setOnClickListener {
             idfield = findViewById<TextView>(R.id.id_field)
             passfield = findViewById<TextView>(R.id.password_field)

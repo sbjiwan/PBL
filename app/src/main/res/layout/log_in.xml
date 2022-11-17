@@ -10,12 +10,6 @@
         android:gravity="center"
         android:orientation="vertical">
 
-        <Button
-            android:id="@+id/back"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="뒤로" />
-
         <EditText
             android:id="@+id/id_field"
             android:layout_width="274dp"
