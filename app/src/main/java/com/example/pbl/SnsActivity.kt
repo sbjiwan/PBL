@@ -10,13 +10,14 @@ class SnsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sns)
 
+
         findViewById<Button>(R.id.user_info).setOnClickListener {
             val intent = Intent(this, UserInfoActivity::class.java)
             startActivity(intent)
         }
 
-        findViewById<Button>(R.id.shop_list).setOnClickListener {
-            val intent = Intent(this, ShopListActivity::class.java)
+        findViewById<Button>(R.id.postedit).setOnClickListener {
+            val intent = Intent(this, PostActivity::class.java)
             startActivity(intent)
         }
     }

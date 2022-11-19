@@ -3,9 +3,11 @@ package com.example.pbl
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class UserInfoActivity : AppCompatActivity() {
@@ -15,14 +17,14 @@ class UserInfoActivity : AppCompatActivity() {
         setContentView(R.layout.user_info)
 
         auth = Firebase.auth
+        val userdb = Firebase.firestore.collection("user_info")
+        userdb.document(auth.uid.toString()).get().addOnSuccessListener {
+            findViewById<TextView>(R.id.username).setText("${it["username"]}")
+            findViewById<TextView>(R.id.userid).setText("userid: ${auth.currentUser?.email.toString()}")
+        }
 
         findViewById<Button>(R.id.edit).setOnClickListener {
             val intent = Intent(this, UserEditActivity::class.java)
-            startActivity(intent)
-        }
-
-        findViewById<Button>(R.id.shop_list).setOnClickListener {
-            val intent = Intent(this, ShopListActivity::class.java)
             startActivity(intent)
         }
 

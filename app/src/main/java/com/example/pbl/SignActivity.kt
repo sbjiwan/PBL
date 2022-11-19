@@ -2,10 +2,11 @@ package com.example.pbl
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Button
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pbl.databinding.SignInBinding
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class SignActivity : AppCompatActivity() {
 
@@ -60,7 +61,11 @@ class SignActivity : AppCompatActivity() {
                            .addOnCompleteListener(this){ task->
                                if(task.isSuccessful){
                                    Toast.makeText(this,"가입되었습니다.",Toast.LENGTH_SHORT).show()
-
+                                   val defaultInfo = hashMapOf(
+                                       "userprofile" to null,
+                                       "username" to "anonymous"
+                                   )
+                                   Firebase.firestore.collection("user_info").document(MyApplication.auth?.uid.toString()).set(defaultInfo)
                                    val intent = Intent(this, LoginActivity::class.java)
                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                                    startActivity(intent)

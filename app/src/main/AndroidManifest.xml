@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <application
+        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -30,8 +31,8 @@
         <activity android:name=".SignActivity"></activity>
         <activity android:name=".UserInfoActivity"></activity>
         <activity android:name=".UserEditActivity"></activity>
-        <activity android:name=".ShopListActivity"></activity>
         <activity android:name=".SnsActivity"></activity>
+        <activity android:name=".PostActivity"></activity>
     </application>
 
 </manifest>

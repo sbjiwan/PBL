@@ -14,19 +14,30 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
-        android:id="@+id/shop_list"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="가게 리스트"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/sns"
-        app:layout_constraintStart_toEndOf="@+id/user_info" />
-
-    <Button
         android:id="@+id/sns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="sns"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="364dp"
+        android:layout_height="523dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"></LinearLayout>
+
+    <Button
+        android:id="@+id/postedit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="새 게시글 작성"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
