@@ -21,12 +21,12 @@ class LoginActivity : AppCompatActivity() {
 
 
         binding.login.setOnClickListener {
-            val email = binding.Email.text.toString()
-            val password = binding.passwordArea.text.toString()
+            val id = binding.idInput.text.toString()
+            val password = binding.passwordInput.text.toString()
 
-            binding.Email.text.clear()
-            binding.passwordArea.text.clear()
-            MyApplication.auth.signInWithEmailAndPassword(email,password)
+            binding.idInput.text.clear()
+            binding.passwordInput.text.clear()
+            MyApplication.auth.signInWithEmailAndPassword("${id}@sns.com",password)
                 .addOnCompleteListener(this){ task->
                     if(task.isSuccessful){
                         val intent = Intent(this, UserInfoActivity::class.java)

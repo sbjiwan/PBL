@@ -11,17 +11,17 @@
         android:orientation="vertical">
 
         <EditText
-            android:id="@+id/Email"
+            android:id="@+id/idInput"
             android:layout_width="274dp"
             android:layout_height="50dp"
             android:layout_margin="1dp"
             android:background="#CCCCCC"
-            android:hint="@string/email"
+            android:hint="abc123"
             android:textColor="#777777"
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/passwordArea"
+            android:id="@+id/passwordInput"
             android:layout_width="274dp"
             android:layout_height="50dp"
             android:layout_margin="1dp"

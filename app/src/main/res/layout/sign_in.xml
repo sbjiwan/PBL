@@ -13,12 +13,12 @@
 
 
         <EditText
-            android:id="@+id/emailEdit"
+            android:id="@+id/idEdit"
             android:layout_width="274dp"
             android:layout_height="50dp"
             android:layout_margin="1dp"
             android:background="#CCCCCC"
-            android:hint="@string/email"
+            android:hint="abc123"
             android:textColor="#777777"
             android:textSize="16sp" />
 

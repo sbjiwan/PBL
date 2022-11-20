@@ -31,7 +31,7 @@ class PostActivity : AppCompatActivity() {
         }
         findViewById<Button>(R.id.post_add).setOnClickListener {
             val postInfo = hashMapOf(
-                "author" to authorInfo,
+                "author" to auth.currentUser?.email.toString(),
                 "postname" to findViewById<EditText>(R.id.namefield).text.toString(),
                 "postmain" to findViewById<EditText>(R.id.mainfield).text.toString(),
                 "postcategory" to findViewById<EditText>(R.id.category).text.toString()

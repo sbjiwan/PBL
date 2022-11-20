@@ -24,16 +24,16 @@ class SignActivity : AppCompatActivity() {
         }*/
 
        binding.signIn.setOnClickListener{
-           val email = binding.emailEdit.text.toString()
+           val id = binding.idEdit.text.toString()
            val password = binding.passwordEdit.text.toString()
            val password2 = binding.passwordConfirmed.text.toString()
 
 
-                   binding.emailEdit.text.clear()
+                   binding.idEdit.text.clear()
                    binding.passwordEdit.text.clear()
                      binding.passwordConfirmed.text.clear()
                    var verifiedGo = true
-                   if(email.isEmpty()){
+                   if(id.isEmpty()){
                        Toast.makeText(this,"이메일을 입력해주세요",Toast.LENGTH_SHORT).show()
                        verifiedGo = false
                    }
@@ -57,20 +57,19 @@ class SignActivity : AppCompatActivity() {
 
 
                    if(verifiedGo){
-                       MyApplication.auth.createUserWithEmailAndPassword(email,password)
+                       MyApplication.auth.createUserWithEmailAndPassword("${id}@sns.com",password)
                            .addOnCompleteListener(this){ task->
                                if(task.isSuccessful){
                                    Toast.makeText(this,"가입되었습니다.",Toast.LENGTH_SHORT).show()
                                    val defaultInfo = hashMapOf(
                                        "userprofile" to null,
-                                       "username" to "anonymous"
                                    )
-                                   Firebase.firestore.collection("user_info").document(MyApplication.auth?.uid.toString()).set(defaultInfo)
+                                   Firebase.firestore.collection("user_info").document(MyApplication.auth.currentUser?.email.toString()).set(defaultInfo)
                                    val intent = Intent(this, LoginActivity::class.java)
                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                                    startActivity(intent)
                                }else{
-                                   Toast.makeText(this,"가입 실패하였습니다. 이메일 형식으로 써주세요.",Toast.LENGTH_SHORT).show()
+                                   Toast.makeText(this,"가입 실패하였습니다. 올바른 아이디 형식으로 써주세요.",Toast.LENGTH_SHORT).show()
                                }
                    }
                }

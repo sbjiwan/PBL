@@ -30,7 +30,6 @@
         <activity android:name=".LoginActivity"></activity>
         <activity android:name=".SignActivity"></activity>
         <activity android:name=".UserInfoActivity"></activity>
-        <activity android:name=".UserEditActivity"></activity>
         <activity android:name=".SnsActivity"></activity>
         <activity android:name=".PostActivity"></activity>
     </application>
