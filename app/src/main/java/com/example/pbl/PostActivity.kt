@@ -26,9 +26,8 @@ class PostActivity : AppCompatActivity() {
         }
 
         val userdb = Firebase.firestore.collection("user_info")
-        userdb.document(auth.uid.toString()).get().addOnSuccessListener {
-            authorInfo = "${it["username"]} : ${auth.currentUser?.email.toString()}"
-        }
+        .document(auth.cu.toString()).get().addOnSuccessListener {
+            
         findViewById<Button>(R.id.post_add).setOnClickListener {
             val postInfo = hashMapOf(
                 "author" to auth.currentUser?.email.toString(),
