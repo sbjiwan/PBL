@@ -24,9 +24,6 @@ class PostActivity : AppCompatActivity() {
             val intent = Intent(this, SnsActivity::class.java)
             startActivity(intent)
         }
-
-        val userdb = Firebase.firestore.collection("user_info")
-        .document(auth.cu.toString()).get().addOnSuccessListener {
             
         findViewById<Button>(R.id.post_add).setOnClickListener {
             val postInfo = hashMapOf(
