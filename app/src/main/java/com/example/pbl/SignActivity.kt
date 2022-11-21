@@ -34,7 +34,7 @@ class SignActivity : AppCompatActivity() {
                      binding.passwordConfirmed.text.clear()
                    var verifiedGo = true
                    if(id.isEmpty()){
-                       Toast.makeText(this,"이메일을 입력해주세요",Toast.LENGTH_SHORT).show()
+                       Toast.makeText(this,"id를 입력해주세요",Toast.LENGTH_SHORT).show()
                        verifiedGo = false
                    }
                    if(password.isEmpty()){
