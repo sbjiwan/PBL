@@ -34,7 +34,7 @@
             android:backgroundTint="#4383F3"
             android:drawableLeft="@drawable/googlexml"
             android:text="@string/google_login"
-            android:textColor="@color/black"
+            android:textColor="#ffffff"
             android:textSize="16sp" />
 
         <Button
