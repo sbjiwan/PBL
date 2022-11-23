@@ -23,7 +23,7 @@ class SnsActivity : AppCompatActivity() {
                 post.findViewById<TextView>(R.id.username).setText(Firebase.auth.currentUser?.email.toString());
                 post.findViewById<TextView>(R.id.post_title).setText(data["postname"].toString())
                 post.findViewById<TextView>(R.id.post_main).setText(data["postmain"].toString())
-                post.findViewById<TextView>(R.id.post_category).setText("카테고리: ${data["postcategory"].toString()}")
+              //  post.findViewById<TextView>(R.id.post_category).setText("카테고리: ${data["postcategory"].toString()}")
                 findViewById<LinearLayout>(R.id.post_list).addView(post);
             }
         }
