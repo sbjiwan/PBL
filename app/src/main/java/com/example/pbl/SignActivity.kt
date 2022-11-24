@@ -61,10 +61,6 @@ class SignActivity : AppCompatActivity() {
                            .addOnCompleteListener(this){ task->
                                if(task.isSuccessful){
                                    Toast.makeText(this,"가입되었습니다.",Toast.LENGTH_SHORT).show()
-                                   val defaultInfo = hashMapOf(
-                                       "userprofile" to null,
-                                   )
-                                   Firebase.firestore.collection("user_info").document(MyApplication.auth.currentUser?.email.toString()).set(defaultInfo)
                                    val intent = Intent(this, LoginActivity::class.java)
                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                                    startActivity(intent)
