@@ -45,6 +45,7 @@ class UserInfoActivity : AppCompatActivity() {
         Firebase.firestore.collection("post_list").whereEqualTo("author", auth.currentUser?.email.toString()).get().addOnSuccessListener {
             for (data in it) {
                 val post = layoutInflater.inflate(R.layout.post_view, null, false);
+
                 post.findViewById<TextView>(R.id.username).setText(Firebase.auth.currentUser?.email.toString());
                 val ref = FirebaseStorage.getInstance().getReference(Firebase.auth.currentUser?.email.toString() + "_profile")
 
@@ -56,6 +57,7 @@ class UserInfoActivity : AppCompatActivity() {
                                 .into(post.findViewById(R.id.user_profile))
                         }
                     })
+                post.findViewById<TextView>(R.id.post_date).setText(data["time"].toString())
                 post.findViewById<TextView>(R.id.post_title).setText(data["post_name"].toString())
                 post.findViewById<TextView>(R.id.post_main).setText(data["post_main"].toString())
                 //post.findViewById<TextView>(R.id.post_category).setText("카테고리: ${data["postcategory"].toString()}")
