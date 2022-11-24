@@ -10,6 +10,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import java.text.SimpleDateFormat
+import java.util.*
 
 class PostActivity : AppCompatActivity() {
     private lateinit var auth: FirebaseAuth
@@ -24,17 +26,27 @@ class PostActivity : AppCompatActivity() {
             val intent = Intent(this, SnsActivity::class.java)
             startActivity(intent)
         }
-            
+
         findViewById<Button>(R.id.post_add).setOnClickListener {
             val postInfo = hashMapOf(
                 "author" to auth.currentUser?.email.toString(),
                 "post_name" to findViewById<EditText>(R.id.namefield).text.toString(),
                 "post_main" to findViewById<EditText>(R.id.mainfield).text.toString(),
                 //"post_category" to findViewById<EditText>(R.id.category).text.toString()
+                "time" to getTime() //데이터베이스에 시간 넣기
             )
             Firebase.firestore.collection("post_list").add(postInfo)
             val intent = Intent(this, SnsActivity::class.java)
             startActivity(intent)
         }
+
+
+    }
+    //시간 함수
+    fun getTime() : String{
+        val currentDayAndTime = Calendar.getInstance().time
+        val dateFormat = SimpleDateFormat("yyyy.MM.dd HH:mm:ss",Locale.KOREA).format(currentDayAndTime)
+
+        return dateFormat
     }
 }
