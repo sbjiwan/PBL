@@ -41,15 +41,23 @@ class UserInfoActivity : AppCompatActivity() {
 
         auth = Firebase.auth
         val userdb = Firebase.firestore.collection("user_info")
-        userdb.document(auth.currentUser?.email.toString()).get().addOnSuccessListener {
-            findViewById<TextView>(R.id.userid).setText(auth.currentUser?.email.toString())
-        }
+        findViewById<TextView>(R.id.userid).setText(auth.currentUser?.email.toString())
         Firebase.firestore.collection("post_list").whereEqualTo("author", auth.currentUser?.email.toString()).get().addOnSuccessListener {
             for (data in it) {
                 val post = layoutInflater.inflate(R.layout.post_view, null, false);
                 post.findViewById<TextView>(R.id.username).setText(Firebase.auth.currentUser?.email.toString());
-                post.findViewById<TextView>(R.id.post_title).setText(data["postname"].toString())
-                post.findViewById<TextView>(R.id.post_main).setText(data["postmain"].toString())
+                val ref = FirebaseStorage.getInstance().getReference(Firebase.auth.currentUser?.email.toString() + "_profile")
+
+                ref.downloadUrl
+                    .addOnCompleteListener(OnCompleteListener { task ->
+                        if(task.isSuccessful){
+                            Glide.with(this)
+                                .load(task.result)
+                                .into(post.findViewById(R.id.user_profile))
+                        }
+                    })
+                post.findViewById<TextView>(R.id.post_title).setText(data["post_name"].toString())
+                post.findViewById<TextView>(R.id.post_main).setText(data["post_main"].toString())
                 //post.findViewById<TextView>(R.id.post_category).setText("카테고리: ${data["postcategory"].toString()}")
                 findViewById<LinearLayout>(R.id.my_post).addView(post);
             }
@@ -79,7 +87,7 @@ class UserInfoActivity : AppCompatActivity() {
         }
 
         //이미지 다운로드
-        val ref = FirebaseStorage.getInstance().getReference(FirebaseUtiles.getUid()+"_profile")
+        val ref = FirebaseStorage.getInstance().getReference(Firebase.auth.currentUser?.email.toString() + "_profile")
 
         ref.downloadUrl
             .addOnCompleteListener(OnCompleteListener { task ->
@@ -88,7 +96,7 @@ class UserInfoActivity : AppCompatActivity() {
                         .load(task.result)
                         .into(findViewById(R.id.imageView))
                 }else{
-                    Toast.makeText(this,"실패",Toast.LENGTH_LONG).show()
+                    Toast.makeText(this,"먼저 유저 프로필을 설정해주세요.",Toast.LENGTH_LONG).show()
                 }
             })
 
@@ -107,7 +115,7 @@ class UserInfoActivity : AppCompatActivity() {
                 val data = baos.toByteArray()
 
                 var uploadTask = FirebaseStorage.getInstance().getReference()
-                    .child(FirebaseUtiles.getUid() + "_profile").putBytes(data)
+                    .child(Firebase.auth.currentUser?.email.toString() + "_profile").putBytes(data)
                 uploadTask.addOnFailureListener {
                     Toast.makeText(this, "업로드 실패", Toast.LENGTH_LONG).show()
 

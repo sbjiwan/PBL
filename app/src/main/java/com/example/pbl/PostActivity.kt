@@ -28,9 +28,9 @@ class PostActivity : AppCompatActivity() {
         findViewById<Button>(R.id.post_add).setOnClickListener {
             val postInfo = hashMapOf(
                 "author" to auth.currentUser?.email.toString(),
-                "postname" to findViewById<EditText>(R.id.namefield).text.toString(),
-                "postmain" to findViewById<EditText>(R.id.mainfield).text.toString(),
-                "postcategory" to findViewById<EditText>(R.id.category).text.toString()
+                "post_name" to findViewById<EditText>(R.id.namefield).text.toString(),
+                "post_main" to findViewById<EditText>(R.id.mainfield).text.toString(),
+                //"post_category" to findViewById<EditText>(R.id.category).text.toString()
             )
             Firebase.firestore.collection("post_list").add(postInfo)
             val intent = Intent(this, SnsActivity::class.java)
