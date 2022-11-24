@@ -17,7 +17,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
             android:textColor="#777777"
-            android:text="취소"
+            android:text="@string/cancle"
             android:textSize="20dp"
             />
         <TextView
@@ -32,7 +32,7 @@
             android:layout_height="wrap_content"
             android:backgroundTint="#FFFFFF"
             android:textColor="#cdcdcd"
-            android:text="등록"
+            android:text="@string/regist"
             android:textSize="20dp"
             />
 
