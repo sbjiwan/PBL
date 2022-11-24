@@ -9,6 +9,8 @@
         android:id="@+id/edit_profile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#777777"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="프로필 변경"
@@ -29,6 +31,8 @@
         android:id="@+id/user_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#777777"
         android:text="유저 정보"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -37,6 +41,8 @@
         android:id="@+id/sns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#777777"
         android:text="sns"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
@@ -45,9 +51,11 @@
         android:id="@+id/logout"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#777777"
         android:layout_marginStart="16dp"
         android:layout_marginTop="80dp"
-        android:text="로그아웃"
+        android:text="@string/log_out"
         app:layout_constraintStart_toEndOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -73,17 +81,30 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="내 게시글:" />
+        <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:fillViewport="true">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <ListView
+                    android:id="@+id/history"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    tools:ignore="NestedScrolling"
+                    tools:listitem="@layout/my_post_item" />
+            </LinearLayout>
+        </ScrollView>
     </LinearLayout>
 
     <Button
         android:id="@+id/imageSave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#777777"
         android:layout_marginTop="16dp"
         android:text="프로필저장"
         app:layout_constraintEnd_toEndOf="parent"

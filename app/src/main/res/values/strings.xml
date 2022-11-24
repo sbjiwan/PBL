@@ -12,7 +12,9 @@
     <string name="ckpw_1">비밀번호가 일치하지 않습니다.</string>
     <string name="ckpw_2">비밀번호가 일치합니다.</string>
     <string name="log_in">로그인</string>
+    <string name="log_out">로그아웃</string>
     <string name="sign_in">회원가입</string>
-
+    <string name="edit">수정</string>
+    <string name="del">삭제</string>
     
 </resources>

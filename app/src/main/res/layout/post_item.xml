@@ -50,7 +50,6 @@
         android:textSize="25dp"
         android:textStyle="bold"
         />
-
     <TextView
         android:id="@+id/post_main"
         android:layout_width="match_parent"
@@ -58,24 +57,4 @@
         android:text="main"
         android:textSize="16dp"
         />
-
-    <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ListView
-                android:id="@+id/history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="NestedScrolling"
-                tools:listitem="@layout/comment_item" />
-        </LinearLayout>
-    </ScrollView>
-
 </LinearLayout>
