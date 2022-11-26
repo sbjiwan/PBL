@@ -58,6 +58,16 @@ class UserPostActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 item.findViewById<TextView>(R.id.username).text = comment["author"]
+                item.findViewById<Button>(R.id.edit).setOnClickListener {
+                    if (comment["author"] == Firebase.auth.currentUser?.email.toString()) {
+                        
+                    } else Toast.makeText(this, "해당 댓글의 작성자만 댓글을 수정할 수 있습니다.", Toast.LENGTH_LONG).show()
+                }
+                item.findViewById<Button>(R.id.del).setOnClickListener {
+                    if (comment["author"] == Firebase.auth.currentUser?.email.toString()) {
+
+                    } else Toast.makeText(this, "해당 댓글의 작성자만 댓글을 삭제할 수 있습니다.", Toast.LENGTH_LONG).show()
+                }
                 item.findViewById<TextView>(R.id.comment_main).text = comment["comment"]
                 findViewById<LinearLayout>(R.id.comment_list).addView(item)
             }

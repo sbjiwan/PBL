@@ -33,8 +33,8 @@ class SignActivity : AppCompatActivity() {
                    binding.passwordEdit.text.clear()
                      binding.passwordConfirmed.text.clear()
                    var verifiedGo = true
-                   if(id.isEmpty()){
-                       Toast.makeText(this,"id를 입력해주세요",Toast.LENGTH_SHORT).show()
+                   if(id.isEmpty() || 20 < id.length){
+                       Toast.makeText(this,"올바른 id를 입력해주세요",Toast.LENGTH_SHORT).show()
                        verifiedGo = false
                    }
                    if(password.isEmpty()){

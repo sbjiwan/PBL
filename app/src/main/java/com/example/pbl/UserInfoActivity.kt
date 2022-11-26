@@ -2,6 +2,7 @@ package com.example.pbl
 
 import android.Manifest
 import android.app.Activity
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.graphics.Bitmap
@@ -9,6 +10,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
 import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
@@ -128,6 +130,36 @@ class UserInfoActivity : AppCompatActivity() {
             val intent = Intent(this,MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
+        }
+        findViewById<Button>(R.id.withdraw).setOnClickListener {
+            AlertDialog.Builder(this)
+                .setTitle("경고")
+                .setMessage("정말로 탈퇴하시겠습니까? (한번 결정한 내용은 되돌릴 수 없습니다.)")
+                .setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
+                    Firebase.firestore.collection("post_list").get().addOnSuccessListener {
+                        for (data in it) {
+                            if (data["author"].toString() == Firebase.auth.currentUser?.email.toString()) data.reference.delete()
+                            else {
+                                val comments =
+                                    data["comment"] as ArrayList<MutableMap<String, String>>
+                                for (comment in comments) {
+                                    if (comment["author"].toString() == Firebase.auth.currentUser?.email.toString()) comments.remove(
+                                        comment
+                                    )
+                                }
+                                Firebase.firestore.collection("post_list").document()
+                            }
+                        }
+                    }
+                    FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
+                        Toast.makeText(this, "정상적으로 탈퇴되었습니다.", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this,MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }
+                }
+                .setNegativeButton("아니오") { dialogInterface: DialogInterface, i: Int -> }
+                .show()
         }
     }
 

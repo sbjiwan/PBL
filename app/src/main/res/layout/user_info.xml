@@ -7,7 +7,7 @@
 
     <Button
         android:id="@+id/edit_profile"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:textColor="#777777"
@@ -15,6 +15,17 @@
         android:layout_marginTop="16dp"
         android:text="프로필 변경"
         app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/imageSave"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="프로필저장"
+        android:textColor="#777777"
+        app:layout_constraintStart_toEndOf="@+id/edit_profile"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -49,7 +60,7 @@
 
     <Button
         android:id="@+id/logout"
-        android:layout_width="wrap_content"
+        android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:textColor="#777777"
@@ -57,6 +68,17 @@
         android:layout_marginTop="80dp"
         android:text="@string/log_out"
         app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/withdraw"
+        android:layout_width="120dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="회원 탈퇴"
+        android:textColor="#777777"
+        app:layout_constraintStart_toEndOf="@+id/logout"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
@@ -92,18 +114,5 @@
                 android:orientation="vertical">'</LinearLayout>
         </ScrollView>
     </LinearLayout>
-
-    <Button
-        android:id="@+id/imageSave"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
-        android:textColor="#777777"
-        android:layout_marginTop="16dp"
-        android:text="프로필저장"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.616"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
