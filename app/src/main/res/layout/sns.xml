@@ -9,22 +9,37 @@
         android:id="@+id/user_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#777777"
         android:text="유저 정보"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
     <Button
+        android:id="@+id/post_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:text="새 게시글 작성"
+        android:textColor="#777777"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sns"
+        app:layout_constraintStart_toEndOf="@+id/user_info" />
+
+    <Button
         android:id="@+id/sns"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
         android:text="sns"
+        android:textColor="#777777"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
         android:id="@+id/ScrollView"
         android:layout_width="match_parent"
-        android:layout_height="500dp"
+        android:layout_height="550dp"
         android:fillViewport="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -37,15 +52,5 @@
             android:orientation="vertical">'
         </LinearLayout>
     </ScrollView>
-
-    <Button
-        android:id="@+id/post_add"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="새 게시글 작성"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ScrollView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
