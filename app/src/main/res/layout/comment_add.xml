@@ -41,59 +41,24 @@
                 android:textSize="14dp" />
         </LinearLayout>
 
-        <Button
-            android:id="@+id/edit"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#777777"
-            android:text="@string/edit"
-            android:textSize="10sp" />
-        <Button
-            android:id="@+id/del"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="@string/del"
-            android:textSize="10sp"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#777777"/>
-
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/post_title"
+    <EditText
+        android:id="@+id/comment_main"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="title"
-        android:textSize="25dp"
-        android:textStyle="bold"
-        />
-
-    <TextView
-        android:id="@+id/post_main"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="main"
+        android:layout_height="550dp"
+        android:hint="comment"
         android:textSize="16dp"
         />
 
-    <ScrollView
+    <Button
+        android:id="@+id/comment"
+        android:layout_marginLeft="320dp"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <ListView
-                android:id="@+id/history"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                tools:ignore="NestedScrolling"
-                tools:listitem="@layout/comment_item" />
-        </LinearLayout>
-    </ScrollView>
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:text="댓글 달기"
+        android:textColor="#777777"
+        android:textSize="10sp" />
 
 </LinearLayout>

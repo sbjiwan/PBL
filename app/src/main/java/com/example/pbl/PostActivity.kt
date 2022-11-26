@@ -13,6 +13,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 class PostActivity : AppCompatActivity() {
@@ -43,9 +44,10 @@ class PostActivity : AppCompatActivity() {
                 "post_name" to findViewById<EditText>(R.id.namefield).text.toString(),
                 "post_main" to findViewById<EditText>(R.id.mainfield).text.toString(),
                 //"post_category" to findViewById<EditText>(R.id.category).text.toString()
-                "time" to getTime() //데이터베이스에 시간 넣기
+                "time" to getTime(),
+                "comment" to ArrayList<MutableMap<String, String>>()
             )
-            if (statePort == 0)  Firebase.firestore.collection("post_list").add(postInfo)
+            if (statePort == 0) Firebase.firestore.collection("post_list").add(postInfo)
             else Firebase.firestore.collection("post_list").document(intent.getStringExtra("uid")!!).update(postInfo)
             val intent = Intent(this, SnsActivity::class.java)
             startActivity(intent)
