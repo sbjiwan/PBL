@@ -49,6 +49,7 @@ class CommentActivity : AppCompatActivity() {
                 Firebase.firestore.collection("post_list").document(intent.getStringExtra("uid")!!).update(postInfo)
             }
             val intent = Intent(this,UserPostActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             intent.putExtra("uid", documentuid)
             startActivity(intent)
         }
