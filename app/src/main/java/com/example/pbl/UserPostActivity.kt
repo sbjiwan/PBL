@@ -52,6 +52,11 @@ class UserPostActivity : AppCompatActivity() {
                                 .into(item.findViewById(R.id.user_profile))
                         }
                     })
+                item.findViewById<LinearLayout>(R.id.user_info).setOnClickListener {
+                    val intent = Intent(this, UserInfoActivity::class.java)
+                    intent.putExtra("user", comment["author"])
+                    startActivity(intent)
+                }
                 item.findViewById<TextView>(R.id.username).text = comment["author"]
                 item.findViewById<TextView>(R.id.comment_main).text = comment["comment"]
                 findViewById<LinearLayout>(R.id.comment_list).addView(item)
