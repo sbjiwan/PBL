@@ -150,6 +150,7 @@ class UserInfoActivity : AppCompatActivity() {
                                 }
                             }
                         }
+                        FirebaseStorage.getInstance().getReference().child(Firebase.auth.currentUser?.email.toString() + "_profile").delete()
                         FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
                             Toast.makeText(this, "정상적으로 탈퇴되었습니다.", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this,MainActivity::class.java)
