@@ -145,10 +145,13 @@ class UserPostActivity : AppCompatActivity() {
                     item.findViewById<Button>(R.id.edit).visibility = View.GONE
                     item.findViewById<Button>(R.id.del).visibility = View.GONE
                 }
-
                 item.findViewById<TextView>(R.id.comment_main).text = comment["comment"]
                 findViewById<LinearLayout>(R.id.comment_list).addView(item)
             }
+        }
+        findViewById<Button>(R.id.back).setOnClickListener {
+            val intent = Intent(this,SnsActivity::class.java)
+            startActivity(intent)
         }
 
         findViewById<Button>(R.id.comment).setOnClickListener {

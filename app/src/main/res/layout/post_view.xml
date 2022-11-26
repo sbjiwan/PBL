@@ -8,6 +8,14 @@
     android:foregroundTint="#5CB134"
     android:orientation="vertical">
 
+    <Button
+        android:id="@+id/back"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#777777"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Sns로 돌아가기" />
+
     <LinearLayout
         android:id="@+id/user"
         android:layout_width="match_parent"
@@ -100,7 +108,9 @@
             android:id="@+id/comment_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical">'</LinearLayout>
+            android:orientation="vertical">'
+
+        </LinearLayout>
     </ScrollView>
 
 </LinearLayout>

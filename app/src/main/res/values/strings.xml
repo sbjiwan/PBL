@@ -18,7 +18,7 @@
     <string name="del">삭제</string>
     <string name="cancle">취소</string>
     <string name="regist">등록</string>
-    <string-array name="postcategory">
+    <string-array name="post_category">
         <item>exam1</item>
         <item>exam2</item>
         <item>exam3</item>
