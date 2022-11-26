@@ -101,7 +101,7 @@ class UserInfoActivity : AppCompatActivity() {
                     //system OS is < Marshmallow
                     pickImageFromGallery();
                 }
-            } else Toast.makeText(this, "해당 사용자만 프로필을 변경할 수 있습니다.", Toast.LENGTH_SHORT).show()
+            }
         }
 
         findViewById<Button>(R.id.imageSave).setOnClickListener {
@@ -126,40 +126,48 @@ class UserInfoActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.logout).setOnClickListener {
-            Firebase.auth.signOut()
-            val intent = Intent(this,MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
+            if (userEmail == Firebase.auth.currentUser?.email.toString()) {
+                Firebase.auth.signOut()
+                val intent = Intent(this,MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
         }
         findViewById<Button>(R.id.withdraw).setOnClickListener {
-            AlertDialog.Builder(this)
-                .setTitle("경고")
-                .setMessage("정말로 탈퇴하시겠습니까? (한번 결정한 내용은 되돌릴 수 없습니다.)")
-                .setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
-                    Firebase.firestore.collection("post_list").get().addOnSuccessListener {
-                        for (data in it) {
-                            if (data["author"].toString() == Firebase.auth.currentUser?.email.toString()) data.reference.delete()
-                            else {
-                                val comments =
-                                    data["comment"] as ArrayList<MutableMap<String, String>>
-                                for (comment in comments) {
-                                    if (comment["author"].toString() == Firebase.auth.currentUser?.email.toString()) comments.remove(
-                                        comment
+            if (userEmail == Firebase.auth.currentUser?.email.toString()) {
+                AlertDialog.Builder(this)
+                    .setTitle("경고")
+                    .setMessage("정말로 탈퇴하시겠습니까? (한번 결정한 내용은 되돌릴 수 없습니다.)")
+                    .setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
+                        Firebase.firestore.collection("post_list").get().addOnSuccessListener {
+                            for (data in it) {
+                                if (data["author"].toString() == Firebase.auth.currentUser?.email.toString()) data.reference.delete()
+                                else {
+                                    val comments = data["comment"] as ArrayList<MutableMap<String, String>>
+                                    for (comment in comments) {
+                                        if (comment["author"].toString() == Firebase.auth.currentUser?.email.toString()) comments.remove(comment)
+                                    }
+                                    val postInfo = mutableMapOf<String, Any>(
+                                        "author" to data.data["author"] as String,
+                                        "post_name" to data.data["post_name"] as String,
+                                        "post_main" to data.data["post_main"] as String,
+                                        "time" to data.data["time"] as String,
+                                        "comment" to comments
                                     )
+                                    data.reference.update(postInfo)
                                 }
-                                Firebase.firestore.collection("post_list").document()
                             }
                         }
+                        FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
+                            Toast.makeText(this, "정상적으로 탈퇴되었습니다.", Toast.LENGTH_SHORT).show()
+                            val intent = Intent(this,MainActivity::class.java)
+                            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                            startActivity(intent)
+                        }
                     }
-                    FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
-                        Toast.makeText(this, "정상적으로 탈퇴되었습니다.", Toast.LENGTH_SHORT).show()
-                        val intent = Intent(this,MainActivity::class.java)
-                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        startActivity(intent)
-                    }
-                }
-                .setNegativeButton("아니오") { dialogInterface: DialogInterface, i: Int -> }
-                .show()
+                    .setNegativeButton("아니오") { dialogInterface: DialogInterface, i: Int -> }
+                    .show()
+            }
         }
     }
 
