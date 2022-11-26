@@ -35,6 +35,7 @@ class UserPostActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.post_title).text = it["post_name"].toString()
             findViewById<TextView>(R.id.post_main).text = it["post_main"].toString()
             val comments = it["comment"] as ArrayList<MutableMap<String, String>>
+            comments.reverse()
             for (comment in comments) {
                 val item = layoutInflater.inflate(R.layout.comment_item, null, false);
                 val ref = FirebaseStorage.getInstance().getReference(comment["author"].toString() + "_profile")
