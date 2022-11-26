@@ -4,7 +4,7 @@
     <string name="naver_login">네이버계정으로 로그인</string>
     <string name="kakao_login">카카오계정으로 로그인</string>
     <string name="google_login">구글계정으로 로그인</string>
-    <string name="email">abc123@email.com</string>
+    <string name="id">abc123</string>
     <string name="password">6자 이상의 비밀번호</string>
     <string name="ck_password">비밀번호 확인</string>
     <string name="wrong_pw">비밀번호는 6자 이상이어야 합니다.</string>

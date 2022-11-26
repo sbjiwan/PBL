@@ -42,7 +42,7 @@ class UserPostActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.post_main).text = it["post_main"].toString()
             val comments = it["comment"] as ArrayList<MutableMap<String, String>>
             comments.reverse()
-            for (comment in comments) {
+            for ((commentindex, comment) in comments.withIndex()) {
                 val item = layoutInflater.inflate(R.layout.comment_item, null, false);
                 val ref = FirebaseStorage.getInstance().getReference(comment["author"].toString() + "_profile")
                 ref.downloadUrl
@@ -61,7 +61,10 @@ class UserPostActivity : AppCompatActivity() {
                 item.findViewById<TextView>(R.id.username).text = comment["author"]
                 item.findViewById<Button>(R.id.edit).setOnClickListener {
                     if (comment["author"] == Firebase.auth.currentUser?.email.toString()) {
-
+                        val intent = Intent(this, CommentActivity::class.java)
+                        intent.putExtra("uid", documentuid)
+                        intent.putExtra("num", comments.lastIndex - commentindex)
+                        startActivity(intent)
                     } else Toast.makeText(this, "해당 댓글의 작성자만 댓글을 수정할 수 있습니다.", Toast.LENGTH_LONG).show()
                 }
                 item.findViewById<Button>(R.id.del).setOnClickListener {
