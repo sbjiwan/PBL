@@ -9,6 +9,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -79,12 +80,13 @@ class UserInfoActivity : AppCompatActivity() {
                 }
             }
         }
-
-
-
-
-        findViewById<Button>(R.id.edit_profile).setOnClickListener {
-            if (userEmail == Firebase.auth.currentUser?.email.toString()) {
+        if (userEmail != Firebase.auth.currentUser?.email.toString()) {
+            findViewById<Button>(R.id.edit_profile).visibility = View.GONE
+            findViewById<Button>(R.id.imageSave).visibility = View.GONE
+            findViewById<Button>(R.id.logout).visibility = View.GONE
+            findViewById<Button>(R.id.withdraw).visibility = View.GONE
+        } else {
+            findViewById<Button>(R.id.edit_profile).setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
                         PackageManager.PERMISSION_DENIED
@@ -102,10 +104,8 @@ class UserInfoActivity : AppCompatActivity() {
                     pickImageFromGallery();
                 }
             }
-        }
 
-        findViewById<Button>(R.id.imageSave).setOnClickListener {
-            if (userEmail == Firebase.auth.currentUser?.email.toString()) {
+            findViewById<Button>(R.id.imageSave).setOnClickListener {
                 val bitmap =  (findViewById<ImageView>(R.id.imageView).drawable as BitmapDrawable).bitmap
                 val baos = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
@@ -118,23 +118,15 @@ class UserInfoActivity : AppCompatActivity() {
                         Toast.makeText(this, "업로드 성공", Toast.LENGTH_LONG).show()
                     }
             }
-        }
 
-        findViewById<Button>(R.id.sns).setOnClickListener {
-            val intent = Intent(this, SnsActivity::class.java)
-            startActivity(intent)
-        }
-
-        findViewById<Button>(R.id.logout).setOnClickListener {
-            if (userEmail == Firebase.auth.currentUser?.email.toString()) {
+            findViewById<Button>(R.id.logout).setOnClickListener {
                 Firebase.auth.signOut()
                 val intent = Intent(this,MainActivity::class.java)
                 intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                 startActivity(intent)
             }
-        }
-        findViewById<Button>(R.id.withdraw).setOnClickListener {
-            if (userEmail == Firebase.auth.currentUser?.email.toString()) {
+
+            findViewById<Button>(R.id.withdraw).setOnClickListener {
                 AlertDialog.Builder(this)
                     .setTitle("경고")
                     .setMessage("정말로 탈퇴하시겠습니까? (한번 결정한 내용은 되돌릴 수 없습니다.)")
@@ -169,6 +161,12 @@ class UserInfoActivity : AppCompatActivity() {
                     .show()
             }
         }
+
+        findViewById<Button>(R.id.sns).setOnClickListener {
+            val intent = Intent(this, SnsActivity::class.java)
+            startActivity(intent)
+        }
+
     }
 
 

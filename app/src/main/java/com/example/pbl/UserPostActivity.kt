@@ -3,6 +3,7 @@ package com.example.pbl
 import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
@@ -24,6 +25,28 @@ class UserPostActivity : AppCompatActivity() {
 
         Firebase.firestore.collection("post_list").document(documentuid).get().addOnSuccessListener {
             author = it["author"].toString()
+            if (author != Firebase.auth.currentUser?.email.toString()) {
+                findViewById<Button>(R.id.edit).visibility = View.GONE
+                findViewById<Button>(R.id.del).visibility = View.GONE
+            } else {
+                findViewById<Button>(R.id.edit).setOnClickListener {
+                    val intent = Intent(this, PostActivity::class.java)
+                    intent.putExtra("uid", documentuid)
+                    startActivity(intent)
+                }
+                findViewById<Button>(R.id.del).setOnClickListener {
+                    AlertDialog.Builder(this)
+                        .setTitle("경고")
+                        .setMessage("정말로 게시글을 삭제하시겠습니까?")
+                        .setPositiveButton("네") {dialogInterface: DialogInterface, i: Int ->
+                            Firebase.firestore.collection("post_list").document(documentuid).delete()
+                            val intent = Intent(this, UserInfoActivity::class.java)
+                            startActivity(intent)
+                        }
+                        .setNegativeButton("아니오") { dialogInterface: DialogInterface, i: Int -> }
+                        .show()
+                }
+            }
             FirebaseStorage.getInstance().getReference(author + "_profile").downloadUrl
                 .addOnCompleteListener(OnCompleteListener { task ->
                     if(task.isSuccessful){
@@ -59,16 +82,14 @@ class UserPostActivity : AppCompatActivity() {
                     startActivity(intent)
                 }
                 item.findViewById<TextView>(R.id.username).text = comment["author"]
-                item.findViewById<Button>(R.id.edit).setOnClickListener {
-                    if (comment["author"] == Firebase.auth.currentUser?.email.toString()) {
+                if (comment["author"] == Firebase.auth.currentUser?.email.toString()) {
+                    item.findViewById<Button>(R.id.edit).setOnClickListener {
                         val intent = Intent(this, CommentActivity::class.java)
                         intent.putExtra("uid", documentuid)
                         intent.putExtra("num", comments.lastIndex - commentindex)
                         startActivity(intent)
-                    } else Toast.makeText(this, "해당 댓글의 작성자만 댓글을 수정할 수 있습니다.", Toast.LENGTH_LONG).show()
-                }
-                item.findViewById<Button>(R.id.del).setOnClickListener {
-                    if (author == Firebase.auth.currentUser?.email.toString() || comment["author"] == Firebase.auth.currentUser?.email.toString()) {
+                    }
+                    item.findViewById<Button>(R.id.del).setOnClickListener {
                         AlertDialog.Builder(this)
                             .setTitle("경고")
                             .setMessage("정말로 댓글을 삭제하시겠습니까?")
@@ -92,40 +113,48 @@ class UserPostActivity : AppCompatActivity() {
                             }
                             .setNegativeButton("아니오") { dialogInterface: DialogInterface, i: Int -> }
                             .show()
-                    } else Toast.makeText(this, "해당 댓글의 작성자나 게시자만 댓글을 삭제할 수 있습니다.", Toast.LENGTH_LONG).show()
+                    }
+                } else if (author == Firebase.auth.currentUser?.email.toString()) {
+                    item.findViewById<Button>(R.id.edit).visibility = View.GONE
+                    item.findViewById<Button>(R.id.del).setOnClickListener {
+                        AlertDialog.Builder(this)
+                            .setTitle("경고")
+                            .setMessage("정말로 댓글을 삭제하시겠습니까?")
+                            .setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
+                                val postInfo = mutableMapOf<String, Any>()
+                                Firebase.firestore.collection("post_list").document(documentuid).get().addOnSuccessListener {
+                                    postInfo["author"] = it["author"] as String
+                                    postInfo["post_name"] = it["post_name"] as String
+                                    postInfo["post_main"] = it["post_main"] as String
+                                    postInfo["time"] = it["time"] as String
+                                    val newComment = it["comment"] as ArrayList<MutableMap<String, String>>
+                                    newComment.remove(mutableMapOf<String, String>(
+                                        "author" to comment["author"].toString(),
+                                        "comment" to comment["comment"].toString()
+                                    ))
+                                    postInfo["comment"] = newComment
+                                    Firebase.firestore.collection("post_list").document(intent.getStringExtra("uid")!!).update(postInfo)
+                                    finish()
+                                    startActivity(this.intent)
+                                }
+                            }
+                            .setNegativeButton("아니오") { dialogInterface: DialogInterface, i: Int -> }
+                            .show()
+                    }
+                } else {
+                    item.findViewById<Button>(R.id.edit).visibility = View.GONE
+                    item.findViewById<Button>(R.id.del).visibility = View.GONE
                 }
+
                 item.findViewById<TextView>(R.id.comment_main).text = comment["comment"]
                 findViewById<LinearLayout>(R.id.comment_list).addView(item)
             }
         }
-        findViewById<Button>(R.id.edit).setOnClickListener {
-            if (checkUser()) {
-                val intent = Intent(this, PostActivity::class.java)
-                intent.putExtra("uid", documentuid)
-                startActivity(intent)
-            } else Toast.makeText(this, "해당 게시글의 작성자만 게시글을 수정할 수 있습니다.", Toast.LENGTH_LONG).show()
-        }
-        findViewById<Button>(R.id.del).setOnClickListener {
-            if (checkUser()) {
-                AlertDialog.Builder(this)
-                    .setTitle("경고")
-                    .setMessage("정말로 게시글을 삭제하시겠습니까?")
-                    .setPositiveButton("네") {dialogInterface: DialogInterface, i: Int ->
-                        Firebase.firestore.collection("post_list").document(documentuid).delete()
-                        val intent = Intent(this, UserInfoActivity::class.java)
-                        startActivity(intent)
-                    }
-                    .setNegativeButton("아니오") { dialogInterface: DialogInterface, i: Int -> }
-                    .show()
-            } else Toast.makeText(this, "해당 게시글의 작성자만 게시글을 삭제할 수 있습니다.", Toast.LENGTH_LONG).show()
-        }
+
         findViewById<Button>(R.id.comment).setOnClickListener {
             val intent = Intent(this,CommentActivity::class.java)
             intent.putExtra("uid", documentuid)
             startActivity(intent)
         }
-    }
-    private fun checkUser() : Boolean {
-        return (Firebase.auth.currentUser?.email.toString() == author)
     }
 }
