@@ -57,9 +57,14 @@ class SignActivity : AppCompatActivity() {
 
 
                    if(verifiedGo){
+                       val pinmap = hashMapOf(
+                           "my_pin" to ArrayList<String>(),
+                           "who_pin" to ArrayList<String>()
+                       )
                        MyApplication.auth.createUserWithEmailAndPassword("${id}@sns.com",password)
                            .addOnCompleteListener(this){ task->
                                if(task.isSuccessful){
+                                   Firebase.firestore.collection("user_pins").document("${id}@sns.com").set(pinmap)
                                    Toast.makeText(this,"가입되었습니다.",Toast.LENGTH_SHORT).show()
                                    val intent = Intent(this, LoginActivity::class.java)
                                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP

@@ -6,7 +6,7 @@
     android:layout_height="match_parent">
 
     <Button
-        android:id="@+id/edit_profile"
+        android:id="@+id/handler"
         android:layout_width="120dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
@@ -25,7 +25,7 @@
         android:backgroundTint="#FFFFFF"
         android:text="프로필저장"
         android:textColor="#777777"
-        app:layout_constraintStart_toEndOf="@+id/edit_profile"
+        app:layout_constraintStart_toEndOf="@+id/handler"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -38,6 +38,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
+    <TextView
+        android:id="@+id/pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="16dp"
+        android:text="핀 받은 수: 0"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+
     <Button
         android:id="@+id/user_info"
         android:layout_width="wrap_content"
@@ -47,6 +57,17 @@
         android:text="유저 정보"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/my_pin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:text="내 핀 정보"
+        android:textColor="#777777"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sns"
+        app:layout_constraintStart_toEndOf="@+id/user_info" />
 
     <Button
         android:id="@+id/sns"
@@ -104,7 +125,7 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="400dp"
+            android:layout_height="500dp"
             android:fillViewport="true">
 
             <LinearLayout

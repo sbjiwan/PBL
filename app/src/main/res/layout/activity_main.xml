@@ -11,34 +11,8 @@
         android:orientation="vertical">
 
         <Button
-            android:layout_width="274dp"
-            android:layout_height="50dp"
-            android:backgroundTint="#F6E751"
-            android:drawableLeft="@drawable/kakaoxml"
-            android:text="@string/kakao_login"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <Button
-            android:layout_width="274dp"
-            android:layout_height="50dp"
-            android:backgroundTint="#06BE1A"
-            android:drawableLeft="@drawable/naverxml"
-            android:text="@string/naver_login"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
-
-        <Button
-            android:layout_width="274dp"
-            android:layout_height="50dp"
-            android:backgroundTint="#4383F3"
-            android:drawableLeft="@drawable/googlexml"
-            android:text="@string/google_login"
-            android:textColor="#ffffff"
-            android:textSize="16sp" />
-
-        <Button
             android:id="@+id/login"
+            android:drawableLeft="@drawable/heartxml"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:background="#00FF0000"
@@ -49,6 +23,7 @@
 
         <Button
             android:id="@+id/sign_in"
+            android:drawableLeft="@drawable/heartxml"
             android:layout_width="wrap_content"
             android:layout_height="48dp"
             android:background="#00FF0000"

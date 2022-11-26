@@ -81,12 +81,12 @@ class UserInfoActivity : AppCompatActivity() {
             }
         }
         if (userEmail != Firebase.auth.currentUser?.email.toString()) {
-            findViewById<Button>(R.id.edit_profile).visibility = View.GONE
+            findViewById<Button>(R.id.handler).visibility = View.GONE
             findViewById<Button>(R.id.imageSave).visibility = View.GONE
             findViewById<Button>(R.id.logout).visibility = View.GONE
             findViewById<Button>(R.id.withdraw).visibility = View.GONE
         } else {
-            findViewById<Button>(R.id.edit_profile).setOnClickListener {
+            findViewById<Button>(R.id.handler).setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
                         PackageManager.PERMISSION_DENIED
@@ -161,6 +161,11 @@ class UserInfoActivity : AppCompatActivity() {
                     .setNegativeButton("아니오") { dialogInterface: DialogInterface, i: Int -> }
                     .show()
             }
+        }
+
+        findViewById<Button>(R.id.my_pin).setOnClickListener {
+            val intent = Intent(this, MyPinActivity::class.java)
+            startActivity(intent)
         }
 
         findViewById<Button>(R.id.sns).setOnClickListener {
