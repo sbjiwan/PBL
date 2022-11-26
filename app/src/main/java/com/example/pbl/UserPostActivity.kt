@@ -31,6 +31,11 @@ class UserPostActivity : AppCompatActivity() {
                             .into(findViewById<ImageView>(R.id.user_profile))
                     }
                 })
+            findViewById<LinearLayout>(R.id.user_info).setOnClickListener {
+                val intent = Intent(this, UserInfoActivity::class.java)
+                intent.putExtra("user", author)
+                startActivity(intent)
+            }
             findViewById<TextView>(R.id.username).text = author
             findViewById<TextView>(R.id.post_title).text = it["post_name"].toString()
             findViewById<TextView>(R.id.post_main).text = it["post_main"].toString()

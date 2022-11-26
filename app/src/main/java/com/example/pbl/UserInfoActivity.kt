@@ -23,7 +23,7 @@ import java.io.ByteArrayOutputStream
 
 
 class UserInfoActivity : AppCompatActivity() {
-    private lateinit var auth: FirebaseAuth
+    private lateinit var userEmail : String
 
     val storage = Firebase.storage
 
@@ -31,12 +31,26 @@ class UserInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_info)
 
-        auth = Firebase.auth
-        val userdb = Firebase.firestore.collection("user_info")
-        findViewById<TextView>(R.id.userid).setText(auth.currentUser?.email.toString())
+        if (intent.getStringExtra("user") == null) userEmail = Firebase.auth.currentUser?.email.toString()
+        else userEmail = intent.getStringExtra("user")!!
+
+        val ref = FirebaseStorage.getInstance().getReference(userEmail + "_profile")
+
+        ref.downloadUrl
+            .addOnCompleteListener(OnCompleteListener { task ->
+                if(task.isSuccessful){
+                    Glide.with(this)
+                        .load(task.result)
+                        .into(findViewById(R.id.imageView))
+                }else{
+                    Toast.makeText(this,"먼저 유저 프로필을 설정해주세요.",Toast.LENGTH_LONG).show()
+                }
+            })
+
+        findViewById<TextView>(R.id.userid).setText(userEmail)
         Firebase.firestore.collection("post_list").orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener {
             for (data in it) {
-                if (data["author"] == Firebase.auth.currentUser?.email.toString()) {
+                if (data["author"] == userEmail) {
                     val post = layoutInflater.inflate(R.layout.post_item, null, false);
 
                     val ref = FirebaseStorage.getInstance().getReference(data["author"].toString() + "_profile")
@@ -68,72 +82,41 @@ class UserInfoActivity : AppCompatActivity() {
 
 
         findViewById<Button>(R.id.edit_profile).setOnClickListener {
-
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                    PackageManager.PERMISSION_DENIED
-                ) {
-                    //permission denied
-                    val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
-                    //show popup to request runtime permission
-                    requestPermissions(permissions, PERMISSION_CODE);
+            if (userEmail == Firebase.auth.currentUser?.email.toString()) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
+                        PackageManager.PERMISSION_DENIED
+                    ) {
+                        //permission denied
+                        val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
+                        //show popup to request runtime permission
+                        requestPermissions(permissions, PERMISSION_CODE);
+                    } else {
+                        //permission already granted
+                        pickImageFromGallery();
+                    }
                 } else {
-                    //permission already granted
+                    //system OS is < Marshmallow
                     pickImageFromGallery();
                 }
-            } else {
-                //system OS is < Marshmallow
-                pickImageFromGallery();
-            }
+            } else Toast.makeText(this, "해당 사용자만 프로필을 변경할 수 있습니다.", Toast.LENGTH_SHORT).show()
         }
 
-        //이미지 다운로드
-        val ref = FirebaseStorage.getInstance().getReference(Firebase.auth.currentUser?.email.toString() + "_profile")
-
-        ref.downloadUrl
-            .addOnCompleteListener(OnCompleteListener { task ->
-                if(task.isSuccessful){
-                    Glide.with(this)
-                        .load(task.result)
-                        .into(findViewById(R.id.imageView))
-                }else{
-                    Toast.makeText(this,"먼저 유저 프로필을 설정해주세요.",Toast.LENGTH_LONG).show()
-                }
-            })
-
-
         findViewById<Button>(R.id.imageSave).setOnClickListener {
-                //check runtime permission
-
-                //이미지 업로드
-                // Get the data from an ImageView as bytes
-                //val mountainsRef =  FirebaseStorage.getInstance().getReference().child("mountain.jpg")
-
-                val bitmap =
-                    (findViewById<ImageView>(R.id.imageView).drawable as BitmapDrawable).bitmap
+            if (userEmail == Firebase.auth.currentUser?.email.toString()) {
+                val bitmap =  (findViewById<ImageView>(R.id.imageView).drawable as BitmapDrawable).bitmap
                 val baos = ByteArrayOutputStream()
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                 val data = baos.toByteArray()
-
-                var uploadTask = FirebaseStorage.getInstance().getReference()
-                    .child(Firebase.auth.currentUser?.email.toString() + "_profile").putBytes(data)
-                uploadTask.addOnFailureListener {
-                    Toast.makeText(this, "업로드 실패", Toast.LENGTH_LONG).show()
-
-                    // Handle unsuccessful uploads
-                }.addOnSuccessListener { taskSnapshot ->
-                    Toast.makeText(this, "업로드 성공", Toast.LENGTH_LONG).show()
-                    // taskSnapshot.metadata contains file metadata such as size, content-type, etc.
-                    // ...
-                }
-
+                var uploadTask = FirebaseStorage.getInstance().getReference().child(Firebase.auth.currentUser?.email.toString() + "_profile").putBytes(data)
+                uploadTask
+                    .addOnFailureListener {
+                        Toast.makeText(this, "업로드 실패", Toast.LENGTH_LONG).show()
+                    }.addOnSuccessListener { taskSnapshot ->
+                        Toast.makeText(this, "업로드 성공", Toast.LENGTH_LONG).show()
+                    }
             }
-
-
-
-
-
-
+        }
 
         findViewById<Button>(R.id.sns).setOnClickListener {
             val intent = Intent(this, SnsActivity::class.java)
@@ -141,7 +124,7 @@ class UserInfoActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.logout).setOnClickListener {
-            auth.signOut()
+            Firebase.auth.signOut()
             val intent = Intent(this,MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
