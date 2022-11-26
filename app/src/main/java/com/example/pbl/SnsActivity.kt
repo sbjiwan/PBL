@@ -6,20 +6,19 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
-import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
-import org.w3c.dom.Text
 
 class SnsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sns)
 
-        Firebase.firestore.collection("post_list").get().addOnSuccessListener {
+        Firebase.firestore.collection("post_list").orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener {
             for (data in it) {
-                val post = layoutInflater.inflate(R.layout.post_view, null, false);
+                val post = layoutInflater.inflate(R.layout.post_item, null, false);
 
                 val ref = FirebaseStorage.getInstance().getReference(data["author"].toString() + "_profile")
 
@@ -31,6 +30,11 @@ class SnsActivity : AppCompatActivity() {
                                 .into(post.findViewById(R.id.user_profile))
                         }
                     })
+                post.setOnClickListener {
+                    val intent = Intent(this, UserPostActivity::class.java)
+                    intent.putExtra("uid", data.id)
+                    startActivity(intent)
+                }
                 post.findViewById<TextView>(R.id.username).setText(data["author"].toString());
                 post.findViewById<TextView>(R.id.post_title).setText(data["post_name"].toString())
                 post.findViewById<TextView>(R.id.post_main).setText(data["post_main"].toString())
@@ -44,7 +48,7 @@ class SnsActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        findViewById<Button>(R.id.postedit).setOnClickListener {
+        findViewById<Button>(R.id.post_add).setOnClickListener {
             val intent = Intent(this, PostActivity::class.java)
             startActivity(intent)
         }

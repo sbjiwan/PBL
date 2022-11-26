@@ -32,6 +32,7 @@
         <activity android:name=".UserInfoActivity"></activity>
         <activity android:name=".SnsActivity"></activity>
         <activity android:name=".PostActivity"></activity>
+        <activity android:name=".UserPostActivity"></activity>
     </application>
 
 </manifest>

@@ -21,25 +21,31 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 
-    <LinearLayout
-        android:id="@+id/post_list"
+    <ScrollView
+        android:id="@+id/ScrollView"
         android:layout_width="match_parent"
         android:layout_height="500dp"
-        android:orientation="vertical"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:fillViewport="true"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck">
+
+        <LinearLayout
+            android:id="@+id/post_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">'
+        </LinearLayout>
+    </ScrollView>
 
     <Button
-        android:id="@+id/postedit"
+        android:id="@+id/post_add"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="새 게시글 작성"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/post_list" />
+        app:layout_constraintTop_toBottomOf="@+id/ScrollView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

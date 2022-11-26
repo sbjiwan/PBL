@@ -50,6 +50,7 @@
         android:textSize="25dp"
         android:textStyle="bold"
         />
+
     <TextView
         android:id="@+id/post_main"
         android:layout_width="match_parent"
@@ -57,6 +58,11 @@
         android:text="main"
         android:textSize="16dp"
         />
-
+    <TextView
+        android:background="#7777"
+        android:textSize="1dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        />
 
 </LinearLayout>

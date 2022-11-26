@@ -8,25 +8,17 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
-import android.provider.MediaStore
 import android.widget.*
-import androidx.activity.result.ActivityResultLauncher
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ActivityCompat.startActivityForResult
 import com.bumptech.glide.Glide
-import com.bumptech.glide.RequestBuilder
-import com.example.pbl.Utils.FirebaseUtiles
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
-import io.grpc.InternalChannelz.id
 import java.io.ByteArrayOutputStream
 
 
@@ -42,26 +34,33 @@ class UserInfoActivity : AppCompatActivity() {
         auth = Firebase.auth
         val userdb = Firebase.firestore.collection("user_info")
         findViewById<TextView>(R.id.userid).setText(auth.currentUser?.email.toString())
-        Firebase.firestore.collection("post_list").whereEqualTo("author", auth.currentUser?.email.toString()).get().addOnSuccessListener {
+        Firebase.firestore.collection("post_list").orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener {
             for (data in it) {
-                val post = layoutInflater.inflate(R.layout.post_view, null, false);
+                if (data["author"] == Firebase.auth.currentUser?.email.toString()) {
+                    val post = layoutInflater.inflate(R.layout.post_item, null, false);
 
-                post.findViewById<TextView>(R.id.username).setText(Firebase.auth.currentUser?.email.toString());
-                val ref = FirebaseStorage.getInstance().getReference(Firebase.auth.currentUser?.email.toString() + "_profile")
+                    val ref = FirebaseStorage.getInstance().getReference(data["author"].toString() + "_profile")
 
-                ref.downloadUrl
-                    .addOnCompleteListener(OnCompleteListener { task ->
-                        if(task.isSuccessful){
-                            Glide.with(this)
-                                .load(task.result)
-                                .into(post.findViewById(R.id.user_profile))
-                        }
-                    })
-                post.findViewById<TextView>(R.id.post_date).setText(data["time"].toString())
-                post.findViewById<TextView>(R.id.post_title).setText(data["post_name"].toString())
-                post.findViewById<TextView>(R.id.post_main).setText(data["post_main"].toString())
-                //post.findViewById<TextView>(R.id.post_category).setText("카테고리: ${data["postcategory"].toString()}")
-                findViewById<LinearLayout>(R.id.my_post).addView(post);
+                    ref.downloadUrl
+                        .addOnCompleteListener(OnCompleteListener { task ->
+                            if(task.isSuccessful){
+                                Glide.with(this)
+                                    .load(task.result)
+                                    .into(post.findViewById(R.id.user_profile))
+                            }
+                        })
+                    post.setOnClickListener {
+                        val intent = Intent(this, UserPostActivity::class.java)
+                        intent.putExtra("uid", data.id)
+                        startActivity(intent)
+                    }
+                    post.findViewById<TextView>(R.id.username).text = data["author"].toString();
+                    post.findViewById<TextView>(R.id.post_title).text = data["post_name"].toString()
+                    post.findViewById<TextView>(R.id.post_main).text = data["post_main"].toString()
+                    post.findViewById<TextView>(R.id.post_date).text = data["time"].toString()//시간 추가
+                    //  post.findViewById<TextView>(R.id.post_category).setText("카테고리: ${data["postcategory"].toString()}")
+                    findViewById<LinearLayout>(R.id.my_post).addView(post)
+                }
             }
         }
 
@@ -143,7 +142,7 @@ class UserInfoActivity : AppCompatActivity() {
 
         findViewById<Button>(R.id.logout).setOnClickListener {
             auth.signOut()
-            val intent = Intent(this,LoginActivity::class.java)
+            val intent = Intent(this,MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
