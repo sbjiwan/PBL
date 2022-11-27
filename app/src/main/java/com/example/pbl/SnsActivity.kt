@@ -34,10 +34,10 @@ class SnsActivity : AppCompatActivity() {
                     intent.putExtra("uid", data.id)
                     startActivity(intent)
                 }
-                post.findViewById<TextView>(R.id.username).setText(data["author"].toString());
-                post.findViewById<TextView>(R.id.post_title).setText(data["post_name"].toString())
-                post.findViewById<TextView>(R.id.post_main).setText(data["post_main"].toString())
-                post.findViewById<TextView>(R.id.post_date).setText(data["time"].toString())//시간 추가
+                post.findViewById<TextView>(R.id.username).text = data["author"].toString();
+                post.findViewById<TextView>(R.id.post_title).text = data["post_name"].toString()
+                post.findViewById<TextView>(R.id.post_main).text = data["post_main"].toString()
+                post.findViewById<TextView>(R.id.post_date).text = data["time"].toString()
               //  post.findViewById<TextView>(R.id.post_category).setText("카테고리: ${data["postcategory"].toString()}")
                 findViewById<LinearLayout>(R.id.post_list).addView(post);
             }

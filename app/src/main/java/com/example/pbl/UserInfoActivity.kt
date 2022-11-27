@@ -239,8 +239,8 @@ class UserInfoActivity : AppCompatActivity() {
                             if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                                 val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
                                 requestPermissions(permissions, PERMISSION_CODE);
-                            } else pickImageFromGallery();
-                        } else pickImageFromGallery();
+                            } else pickImageFromGallery()
+                        } else pickImageFromGallery()
                     }
                     
                     // 프로필 저장 버튼
@@ -277,7 +277,6 @@ class UserInfoActivity : AppCompatActivity() {
     }
 
     private fun pickImageFromGallery() {
-        //Intent to pick image
         val intent = Intent(Intent.ACTION_PICK)
         intent.type = "image/*"
         startActivityForResult(intent, IMAGE_PICK_CODE)
@@ -285,16 +284,16 @@ class UserInfoActivity : AppCompatActivity() {
 
     companion object {
         //image pick code
-        private val IMAGE_PICK_CODE = 1000;
+        private const val IMAGE_PICK_CODE = 1000;
         //Permission code
-        private val PERMISSION_CODE = 1001;
+        private const val PERMISSION_CODE = 1001;
     }
 
     //handle requested permission result
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when(requestCode){
             PERMISSION_CODE -> {
-                if (grantResults.size >0 && grantResults[0] ==
+                if (grantResults.isNotEmpty() && grantResults[0] ==
                     PackageManager.PERMISSION_GRANTED){
                     //permission from popup granted
                     pickImageFromGallery()
