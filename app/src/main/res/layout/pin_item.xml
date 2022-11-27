@@ -8,32 +8,25 @@
     <LinearLayout
         android:id="@+id/user"
         android:layout_width="match_parent"
-        android:layout_height="40dp">
+        android:layout_height="60dp">
         <LinearLayout
             android:id="@+id/user_info"
             android:layout_width="wrap_content"
-            android:layout_height="40dp">
+            android:layout_height="60dp">
 
             <ImageView
                 android:id="@+id/user_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
                 app:srcCompat="@drawable/ic_launcher_foreground" />
-            <LinearLayout
-
+            <TextView
+                android:id="@+id/username"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/username"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:gravity="center"
-                    android:text="username"
-                    android:textSize="14dp"
-                    android:textStyle="bold" />
-            </LinearLayout>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="username"
+                android:textSize="14dp"
+                android:textStyle="bold" />
         </LinearLayout>
 
     </LinearLayout>

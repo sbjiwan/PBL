@@ -37,25 +37,15 @@ class UserInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_info)
 
-        Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString()).get().addOnSuccessListener {
-            if (it.data == null) {
-                Toast.makeText(this, "삭제중인 계정임을 확인. 계정 삭제를 재시도합니다.", Toast.LENGTH_SHORT).show()
-                FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
-                    Toast.makeText(this, "정상적으로 탈퇴되었습니다.", Toast.LENGTH_SHORT).show()
-                    val intent = Intent(this,MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
-                }
-                finish()
-            }
-            else {
+        if (intent.getStringExtra("user") == null) userEmail = Firebase.auth.currentUser?.email.toString()
+        else userEmail = intent.getStringExtra("user")!!
+
+        Firebase.firestore.collection("user_pins").document(userEmail).get().addOnSuccessListener {
+            if (it.data != null) {
                 val pinedList = it["pined_list"] as ArrayList<String>
                 findViewById<TextView>(R.id.userpined).text = "핀 받은 수 : ${pinedList.size}"
             }
         }
-
-        if (intent.getStringExtra("user") == null) userEmail = Firebase.auth.currentUser?.email.toString()
-        else userEmail = intent.getStringExtra("user")!!
 
         val ref = FirebaseStorage.getInstance().getReference(userEmail + "_profile")
 
@@ -189,7 +179,7 @@ class UserInfoActivity : AppCompatActivity() {
                     .setMessage("정말로 탈퇴하시겠습니까? (한번 결정한 내용은 되돌릴 수 없습니다.)")
                     .setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
                         Firebase.firestore.collection("post_list").get().addOnSuccessListener {
-                            Toast.makeText(this, "만약, '정상적으로 탈퇴되었습니다'라는 문구가 안나온다면, 재 로그인 해 주세요.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "만약, '정상적으로 탈퇴되었습니다'라는 문구가 안나온다면, 재 로그인 후 탈퇴를 다시 진행해주세요ㅁ.", Toast.LENGTH_SHORT).show()
                             for (data in it) {
                                 if (data["author"].toString() == Firebase.auth.currentUser?.email.toString()) data.reference.delete()
                                 else {
@@ -237,10 +227,21 @@ class UserInfoActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.sns).setOnClickListener {
-            val intent = Intent(this, SnsActivity::class.java)
-            startActivity(intent)
+            Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString()).get().addOnSuccessListener {
+                if (it.data == null) {
+                    Toast.makeText(this, "삭제중인 계정임을 확인. 삭제를 재진행합니다.", Toast.LENGTH_SHORT).show()
+                    FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
+                        Toast.makeText(this, "정상적으로 탈퇴되었습니다.", Toast.LENGTH_SHORT).show()
+                        val intent = Intent(this,MainActivity::class.java)
+                        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        startActivity(intent)
+                    }
+                } else {
+                    val intent = Intent(this, SnsActivity::class.java)
+                    startActivity(intent)
+                }
+            }
         }
-
     }
 
     private fun pickImageFromGallery() {
