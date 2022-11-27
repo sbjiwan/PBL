@@ -47,9 +47,8 @@ class UserInfoActivity : AppCompatActivity() {
             }
         }
 
-        val ref = FirebaseStorage.getInstance().getReference(userEmail + "_profile")
-
-        ref.downloadUrl
+        FirebaseStorage.getInstance().getReference(userEmail + "_profile")
+            .downloadUrl
             .addOnCompleteListener(OnCompleteListener { task ->
                 if(task.isSuccessful){
                     Glide.with(this)
