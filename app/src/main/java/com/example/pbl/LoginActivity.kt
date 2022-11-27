@@ -19,6 +19,7 @@ class LoginActivity : AppCompatActivity() {
         binding = LogInBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 로그인 버튼
 
         binding.login.setOnClickListener {
             val id = binding.idInput.text.toString()
@@ -33,13 +34,8 @@ class LoginActivity : AppCompatActivity() {
                         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
                         startActivity(intent)
                         Toast.makeText(this,"로그인 성공",Toast.LENGTH_SHORT).show()
-                    }else{
-                        Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
-                    }
-
+                    } else Toast.makeText(this,"로그인 실패",Toast.LENGTH_SHORT).show()
                 }
-
-
         }
     }
 }

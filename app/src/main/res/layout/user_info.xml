@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFFFFF"
-        android:text="프로필저장"
+        android:text="프로필 저장"
         android:textColor="#777777"
         app:layout_constraintStart_toEndOf="@+id/handler"
         app:layout_constraintTop_toTopOf="parent" />

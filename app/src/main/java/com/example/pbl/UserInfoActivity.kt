@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
+import com.example.pbl.Utils.FirebaseUtil
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -30,60 +31,66 @@ import kotlin.properties.Delegates
 
 
 class UserInfoActivity : AppCompatActivity() {
+    val util = FirebaseUtil()
     private lateinit var userEmail : String
-    val storage = Firebase.storage
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_info)
 
-        if (intent.getStringExtra("user") == null) userEmail = Firebase.auth.currentUser?.email.toString()
-        else userEmail = intent.getStringExtra("user")!!
+        // lateinit 변수 초기화
 
+        userEmail =
+            if (intent.getStringExtra("user") == null) Firebase.auth.currentUser?.email.toString()
+            else intent.getStringExtra("user")!!
+
+        // 로그아웃 버튼
+        
         findViewById<Button>(R.id.logout).setOnClickListener {
             Firebase.auth.signOut()
             val intent = Intent(this,MainActivity::class.java)
             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             startActivity(intent)
         }
+        
+        // 회원 탈퇴 버튼
 
         findViewById<Button>(R.id.withdraw).setOnClickListener {
             AlertDialog.Builder(this)
                 .setTitle("경고")
                 .setMessage("정말로 탈퇴하시겠습니까? (한번 결정한 내용은 되돌릴 수 없습니다.)")
+                
+                // 회원 탈퇴 확인 후 데이터 삭제 작업
+                    
                 .setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
-                    Firebase.firestore.collection("post_list").get().addOnSuccessListener {
+                    util.posts.get().addOnSuccessListener {
                         Toast.makeText(this, "'정상적으로 탈퇴되었습니다'라는 문구가 안나오면, 재 로그인 후 탈퇴를 다시 진행해주세요.", Toast.LENGTH_SHORT).show()
                         for (data in it) {
-                            if (data["author"].toString() == Firebase.auth.currentUser?.email.toString()) data.reference.delete()
+                            if (data["author"].toString() == util.currentUser) data.reference.delete()
                             else {
                                 val comments = data["comment"] as ArrayList<MutableMap<String, String>>
-                                for (comment in comments) {
-                                    if (comment["author"].toString() == Firebase.auth.currentUser?.email.toString()) comments.remove(comment)
-                                }
-                                val postInfo = mutableMapOf<String, Any>(
+                                for (comment in comments) if (comment["author"].toString() == util.currentUser) comments.remove(comment)
+                                data.reference.update(hashMapOf<String, Any>(
                                     "author" to data.data["author"] as String,
                                     "post_name" to data.data["post_name"] as String,
                                     "post_main" to data.data["post_main"] as String,
                                     "time" to data.data["time"] as String,
                                     "comment" to comments
-                                )
-                                data.reference.update(postInfo)
+                                ))
                             }
                         }
                     }
-                    Firebase.firestore.collection("user_pins").get().addOnSuccessListener {
+                    util.pins.get().addOnSuccessListener {
                         for (data in it) {
                             val pinedData = data["pined_list"] as ArrayList<String>
-                            for (pinedQuery in pinedData) if (pinedQuery == Firebase.auth.currentUser?.email.toString()) pinedData.remove(pinedQuery)
+                            for (pinedQuery in pinedData) if (pinedQuery == util.currentUser) pinedData.remove(pinedQuery)
                             data.reference.set(hashMapOf(
                                 "pin_list" to data["pin_list"] as ArrayList<String>,
                                 "pined_list" to pinedData
                             ))
                         }
                     }
-                    Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString()).delete()
-                    FirebaseStorage.getInstance().getReference().child(Firebase.auth.currentUser?.email.toString() + "_profile").delete()
+                    util.pins.document(util.currentUser).delete()
+                    util.instance.reference.child(util.currentUser + "_profile").delete()
                     FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
                         Toast.makeText(this, "정상적으로 탈퇴되었습니다.", Toast.LENGTH_SHORT).show()
                         val intent = Intent(this,MainActivity::class.java)
@@ -95,15 +102,26 @@ class UserInfoActivity : AppCompatActivity() {
                 .show()
         }
 
-        Firebase.firestore.collection("user_pins").document(userEmail).get().addOnSuccessListener {integrity ->
-            if (integrity.data == null && userEmail == Firebase.auth.currentUser?.email.toString()) {
+        // 권한에 따른 레이아웃 처리
+
+        util.pins.document(userEmail).get().addOnSuccessListener {integrity ->
+
+            // 회원 무결성이 잘못되었을 때
+
+            if (integrity.data == null && userEmail == util.currentUser) {
                 Toast.makeText(this, "회원 탈퇴를 마저 진행해주세요.", Toast.LENGTH_SHORT).show()
                 findViewById<Button>(R.id.handler).visibility = View.GONE
                 findViewById<Button>(R.id.imageSave).visibility = View.GONE
                 findViewById<Button>(R.id.my_pin).visibility = View.GONE
                 findViewById<Button>(R.id.sns).visibility = View.GONE
+                
+            // 회원 무결성 점검 완료
+                
             } else {
-                FirebaseStorage.getInstance().getReference(userEmail + "_profile")
+                
+                // 유저 프로필 동기화
+                
+                util.instance.getReference(userEmail + "_profile")
                     .downloadUrl
                     .addOnCompleteListener(OnCompleteListener { task ->
                         if(task.isSuccessful){
@@ -112,11 +130,17 @@ class UserInfoActivity : AppCompatActivity() {
                                 .into(findViewById(R.id.imageView))
                         } else Toast.makeText(this,"먼저 유저 프로필을 설정해주세요.",Toast.LENGTH_LONG).show()
                     })
-                Firebase.firestore.collection("post_list").orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener {
+                
+                // 유저 게시물 동기화
+                
+                util.posts.orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener {
                     for (data in it) {
                         if (data["author"] == userEmail) {
                             val post = layoutInflater.inflate(R.layout.post_item, null, false);
-                            FirebaseStorage.getInstance().getReference(data["author"].toString() + "_profile")
+
+                            // 게시물 프로필
+
+                            util.instance.getReference(data["author"].toString() + "_profile")
                                 .downloadUrl
                                 .addOnCompleteListener(OnCompleteListener { task ->
                                     if(task.isSuccessful){
@@ -125,11 +149,17 @@ class UserInfoActivity : AppCompatActivity() {
                                             .into(post.findViewById(R.id.user_profile))
                                     }
                                 })
+
+                            // 게시물 이동 기능
+
                             post.setOnClickListener {
                                 val intent = Intent(this, UserPostActivity::class.java)
                                 intent.putExtra("uid", data.id)
                                 startActivity(intent)
                             }
+
+                            // 게시물 정보 동기화
+                            
                             post.findViewById<TextView>(R.id.username).text = data["author"].toString();
                             post.findViewById<TextView>(R.id.post_title).text = data["post_name"].toString()
                             post.findViewById<TextView>(R.id.post_main).text = data["post_main"].toString()
@@ -139,14 +169,26 @@ class UserInfoActivity : AppCompatActivity() {
                         }
                     }
                 }
+
+                // 유저 정보 동기화
+
                 findViewById<TextView>(R.id.userid).text = userEmail
                 val pinedList = integrity["pined_list"] as ArrayList<String>
                 findViewById<TextView>(R.id.userpined).text = "핀 받은 수 : ${pinedList.size}"
-                if (userEmail != Firebase.auth.currentUser?.email.toString()) {
+                
+                // 유저 정보창을 보고 있는 유저가 유저 정보창의 유저가 아닐 때
+                
+                if (userEmail != util.currentUser) {
+
+                    // 핸들러 버튼 text 변경 및 핸들러 버튼 기능 설정 (핀)
+                    
                     findViewById<Button>(R.id.handler).text = "핀 하기 / 풀기"
                     findViewById<Button>(R.id.handler).setOnClickListener {
-                        val pinInfo = Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString())
-                        val tPinInfo = Firebase.firestore.collection("user_pins").document(userEmail)
+                        val pinInfo = util.pins.document(util.currentUser)
+                        val tPinInfo = util.pins.document(userEmail)
+                        
+                        // 유저 정보창을 보고 있는 유저의 핀 수정
+
                         pinInfo.get().addOnSuccessListener {
                             val myPinInfo = it["pin_list"] as ArrayList<String>
                             if (myPinInfo.find { field -> field == userEmail } == null)  myPinInfo.add(userEmail)
@@ -155,17 +197,17 @@ class UserInfoActivity : AppCompatActivity() {
                                 "pin_list" to myPinInfo,
                                 "pined_list" to it["pined_list"] as ArrayList<String>
                             ))
-                            finish();
-                            startActivity(intent)
                         }
+
+                        // 유저 정보창의 유저의 받은 핀 수정
+
                         tPinInfo.get().addOnSuccessListener {
                             val targetPinInfo = it["pined_list"] as ArrayList<String>
-                            if (targetPinInfo.find { field -> field == Firebase.auth.currentUser!!.email.toString() } == null) {
-                                targetPinInfo.add(Firebase.auth.currentUser!!.email.toString())
+                            if (targetPinInfo.find { field -> field == util.currentUser } == null) {
+                                targetPinInfo.add(util.currentUser)
                                 Toast.makeText(this, "해당 유저를 핀 하였습니다.", Toast.LENGTH_SHORT).show()
-                            }
-                            else {
-                                targetPinInfo.remove(Firebase.auth.currentUser!!.email.toString())
+                            } else {
+                                targetPinInfo.remove(util.currentUser)
                                 Toast.makeText(this, "해당 유저를 핀 풀었습니다.", Toast.LENGTH_SHORT).show()
                             }
                             tPinInfo.set(hashMapOf(
@@ -176,33 +218,37 @@ class UserInfoActivity : AppCompatActivity() {
                         finish();
                         startActivity(intent)
                     }
-                    findViewById<Button>(R.id.imageSave).visibility = View.GONE
-                    findViewById<Button>(R.id.logout).visibility = View.GONE
-                    findViewById<Button>(R.id.withdraw).visibility = View.GONE
-                    findViewById<Button>(R.id.my_pin).visibility = View.GONE
+
+                    // 내 정보 버튼 활성화
+
                     findViewById<Button>(R.id.user_info).setOnClickListener {
                         val intent = Intent(this, UserInfoActivity::class.java)
                         startActivity(intent)
                     }
+
+                    // 권한을 보유하지 않은 버튼 숨김 처리
+                    
+                    findViewById<Button>(R.id.imageSave).visibility = View.GONE
+                    findViewById<Button>(R.id.logout).visibility = View.GONE
+                    findViewById<Button>(R.id.withdraw).visibility = View.GONE
+                    findViewById<Button>(R.id.my_pin).visibility = View.GONE
+
+                // 유저 정보창을 보고 있는 유저가 유저 정보창의 유저일 때
+
                 } else {
+
+                    // 핸들러 버튼 기능 설정 (프로필 변경)
+
                     findViewById<Button>(R.id.handler).setOnClickListener {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) ==
-                                PackageManager.PERMISSION_DENIED
-                            ) {
-                                //permission denied
+                            if (checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
                                 val permissions = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE);
-                                //show popup to request runtime permission
                                 requestPermissions(permissions, PERMISSION_CODE);
-                            } else {
-                                //permission already granted
-                                pickImageFromGallery();
-                            }
-                        } else {
-                            //system OS is < Marshmallow
-                            pickImageFromGallery();
-                        }
+                            } else pickImageFromGallery();
+                        } else pickImageFromGallery();
                     }
+                    
+                    // 프로필 저장 버튼
 
                     findViewById<Button>(R.id.imageSave).setOnClickListener {
                         val bitmap =  (findViewById<ImageView>(R.id.imageView).drawable as BitmapDrawable).bitmap
@@ -217,12 +263,16 @@ class UserInfoActivity : AppCompatActivity() {
                                 Toast.makeText(this, "업로드 성공", Toast.LENGTH_LONG).show()
                             }
                     }
+                    
+                    // 내 핀 정보 버튼
 
                     findViewById<Button>(R.id.my_pin).setOnClickListener {
                         val intent = Intent(this, MyPinActivity::class.java)
                         startActivity(intent)
                     }
                 }
+                
+                // sns 버튼
 
                 findViewById<Button>(R.id.sns).setOnClickListener {
                     val intent = Intent(this, SnsActivity::class.java)
@@ -265,12 +315,8 @@ class UserInfoActivity : AppCompatActivity() {
 
     //handle result of picked image
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE) {
             findViewById<ImageView>(R.id.imageView).setImageURI(data?.data)
         }
     }
-
-
 }
-
-
