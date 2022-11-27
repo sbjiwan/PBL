@@ -40,6 +40,14 @@
                 android:textColor="#cdcdcd"
                 android:textSize="14dp" />
         </LinearLayout>
+        <TextView
+            android:id="@+id/post_category"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="[없음]"
+            android:textColor="#0000ff"
+            android:textSize="14dp" />
     </LinearLayout>
 
     <TextView

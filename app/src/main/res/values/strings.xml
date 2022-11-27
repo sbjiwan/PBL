@@ -19,11 +19,18 @@
     <string name="cancle">취소</string>
     <string name="regist">등록</string>
     <string-array name="post_category">
-        <item>exam1</item>
-        <item>exam2</item>
-        <item>exam3</item>
-        <item>exam4</item>
-        <item>exam5</item>
-        <item>exam6</item>
+        <item>[없음]</item>
+        <item>[게임]</item>
+        <item>[교육]</item>
+        <item>[국내 중심]</item>
+        <item>[스포츠]</item>
+        <item>[연애]</item>
+        <item>[음악]</item>>
+        <item>[이슈]</item>
+        <item>[자연]</item>
+        <item>[잡담]</item>
+        <item>[취미]</item>
+        <item>[학업]</item>
+        <item>[해외 중심]</item>
     </string-array>
 </resources>

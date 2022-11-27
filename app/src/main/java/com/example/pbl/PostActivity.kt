@@ -28,6 +28,8 @@ class PostActivity : AppCompatActivity() {
                 util.posts.document(intent.getStringExtra("uid")!!).get().addOnSuccessListener {
                     findViewById<EditText>(R.id.namefield).setText(it["post_name"].toString())
                     findViewById<EditText>(R.id.mainfield).setText(it["post_main"].toString())
+                    val tester = resources.getStringArray(R.array.post_category).toCollection(ArrayList<String>())
+                    findViewById<Spinner>(R.id.post_category).setSelection(tester.indexOf(it["post_category"].toString()))
                 }
                 1
         }
@@ -51,7 +53,7 @@ class PostActivity : AppCompatActivity() {
                 "author" to util.currentUser,
                 "post_name" to findViewById<EditText>(R.id.namefield).text.toString(),
                 "post_main" to findViewById<EditText>(R.id.mainfield).text.toString(),
-                //"post_category" to findViewById<EditText>(R.id.category).text.toString()
+                "post_category" to findViewById<Spinner>(R.id.post_category).selectedItem.toString(),
                 "time" to getTime(),
                 "comment" to ArrayList<MutableMap<String, String>>()
             )
