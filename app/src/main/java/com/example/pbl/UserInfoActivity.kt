@@ -18,17 +18,9 @@ import com.example.pbl.Utils.FirebaseUtil
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
-import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
-import com.google.firebase.storage.StorageException
-import com.google.firebase.storage.ktx.storage
-import org.w3c.dom.Text
 import java.io.ByteArrayOutputStream
-import kotlin.properties.Delegates
-
 
 class UserInfoActivity : AppCompatActivity() {
     private val util = FirebaseUtil()
