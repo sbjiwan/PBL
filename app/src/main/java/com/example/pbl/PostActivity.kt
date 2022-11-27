@@ -2,8 +2,10 @@ package com.example.pbl
 
 import android.content.Intent
 import android.os.Bundle
+import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.EditText
+import android.widget.Spinner
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pbl.util.FirebaseUtil
 import java.text.SimpleDateFormat
@@ -36,6 +38,11 @@ class PostActivity : AppCompatActivity() {
             val intent = Intent(this, SnsActivity::class.java)
             startActivity(intent)
         }
+
+        // 카테고리 스피너
+        
+        findViewById<Spinner>(R.id.post_category).adapter =
+            ArrayAdapter.createFromResource(this, R.array.post_category,android.R.layout.simple_spinner_item)
 
         // 게시 버튼
 
