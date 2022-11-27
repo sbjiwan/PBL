@@ -17,10 +17,12 @@ import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestoreException
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageException
 import com.google.firebase.storage.ktx.storage
 import org.w3c.dom.Text
 import java.io.ByteArrayOutputStream
@@ -35,6 +37,23 @@ class UserInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_info)
 
+        Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString()).get().addOnSuccessListener {
+            if (it.data == null) {
+                Toast.makeText(this, "삭제중인 계정임을 확인. 계정 삭제를 재시도합니다.", Toast.LENGTH_SHORT).show()
+                FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
+                    Toast.makeText(this, "정상적으로 탈퇴되었습니다.", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this,MainActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                }
+                finish()
+            }
+            else {
+                val pinedList = it["pined_list"] as ArrayList<String>
+                findViewById<TextView>(R.id.userpined).text = "핀 받은 수 : ${pinedList.size}"
+            }
+        }
+
         if (intent.getStringExtra("user") == null) userEmail = Firebase.auth.currentUser?.email.toString()
         else userEmail = intent.getStringExtra("user")!!
 
@@ -46,12 +65,12 @@ class UserInfoActivity : AppCompatActivity() {
                     Glide.with(this)
                         .load(task.result)
                         .into(findViewById(R.id.imageView))
-                }else{
+                } else {
                     Toast.makeText(this,"먼저 유저 프로필을 설정해주세요.",Toast.LENGTH_LONG).show()
                 }
             })
 
-        findViewById<TextView>(R.id.userid).setText(userEmail)
+        findViewById<TextView>(R.id.userid).text = userEmail
         Firebase.firestore.collection("post_list").orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener {
             for (data in it) {
                 if (data["author"] == userEmail) {
@@ -80,10 +99,6 @@ class UserInfoActivity : AppCompatActivity() {
                     findViewById<LinearLayout>(R.id.my_post).addView(post)
                 }
             }
-        }
-        Firebase.firestore.collection("user_pins").document(userEmail).get().addOnSuccessListener {
-            val pinedList = it["pined_list"] as ArrayList<String>
-            findViewById<TextView>(R.id.userpined).text = "핀 받은 수: ${pinedList.lastIndex + 1}"
         }
         if (userEmail != Firebase.auth.currentUser?.email.toString()) {
             findViewById<Button>(R.id.handler).text = "핀 하기 / 풀기"
@@ -174,7 +189,7 @@ class UserInfoActivity : AppCompatActivity() {
                     .setMessage("정말로 탈퇴하시겠습니까? (한번 결정한 내용은 되돌릴 수 없습니다.)")
                     .setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
                         Firebase.firestore.collection("post_list").get().addOnSuccessListener {
-                            Toast.makeText(this, "만약, '정상적으로 탈퇴되었습니다'라는 문구가 안나온다면, 재 로그인 하셨다 다시 탈퇴를 진행해주세요.", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(this, "만약, '정상적으로 탈퇴되었습니다'라는 문구가 안나온다면, 재 로그인 해 주세요.", Toast.LENGTH_SHORT).show()
                             for (data in it) {
                                 if (data["author"].toString() == Firebase.auth.currentUser?.email.toString()) data.reference.delete()
                                 else {
@@ -227,17 +242,6 @@ class UserInfoActivity : AppCompatActivity() {
         }
 
     }
-
-
-    //->프로필 작성
-   /*
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?){
-        super.onActivityResult(resultCode,resultCode,data)
-        if(resultCode == RESULT_OK && requestCode == 100){
-            findViewById<ImageView>(R.id.imageView).setImageURI(data?.data)
-        }
-    }
-*/
 
     private fun pickImageFromGallery() {
         //Intent to pick image

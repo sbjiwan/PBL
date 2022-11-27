@@ -6,6 +6,7 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.bumptech.glide.Glide
 import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.Query
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
@@ -15,7 +16,10 @@ class SnsActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sns)
-
+        Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString()).get().addOnFailureListener {
+            Toast.makeText(this, "올바르지 않은 계정입니다. 접속하실 수 없습니다.", Toast.LENGTH_SHORT).show()
+            finish()
+        }
         Firebase.firestore.collection("post_list").orderBy("time", Query.Direction.DESCENDING).get().addOnSuccessListener {
             for (data in it) {
                 val post = layoutInflater.inflate(R.layout.post_item, null, false);
