@@ -115,7 +115,7 @@
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="550dp"
+        android:layout_height="520dp"
         android:fillViewport="true">
 
         <LinearLayout
