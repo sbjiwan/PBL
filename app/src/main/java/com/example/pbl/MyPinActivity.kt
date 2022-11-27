@@ -40,12 +40,5 @@ class MyPinActivity : AppCompatActivity() {
                 findViewById<LinearLayout>(R.id.pin_list).addView(pinObject)
             }
         }
-
-        // 뒤로 가기 버튼
-
-        findViewById<Button>(R.id.back).setOnClickListener {
-            val intent = Intent(this, UserInfoActivity::class.java)
-            startActivity(intent)
-        }
     }
 }
