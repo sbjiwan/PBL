@@ -2,10 +2,7 @@ package com.example.pbl
 
 import android.content.Intent
 import android.os.Bundle
-import android.widget.ArrayAdapter
-import android.widget.Button
-import android.widget.EditText
-import android.widget.Spinner
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pbl.util.FirebaseUtil
 import java.text.SimpleDateFormat
@@ -49,18 +46,22 @@ class PostActivity : AppCompatActivity() {
         // 게시 버튼
 
         findViewById<Button>(R.id.post_add).setOnClickListener {
-            val hashMap = hashMapOf<String, Any>(
-                "author" to util.currentUser,
-                "post_name" to findViewById<EditText>(R.id.namefield).text.toString(),
-                "post_main" to findViewById<EditText>(R.id.mainfield).text.toString(),
-                "post_category" to findViewById<Spinner>(R.id.post_category).selectedItem.toString(),
-                "time" to getTime(),
-                "comment" to ArrayList<MutableMap<String, String>>()
-            )
-            if (statePort == 0) util.posts.add(hashMap)
-            else util.posts.document(intent.getStringExtra("uid")!!).update(hashMap)
-            val intent = Intent(this, SnsActivity::class.java)
-            startActivity(intent)
+            val postname = findViewById<EditText>(R.id.namefield).text.toString()
+            val postmain = findViewById<EditText>(R.id.mainfield).text.toString()
+            if (postname.isNotEmpty() && postmain.isNotEmpty()) {
+                val hashMap = hashMapOf<String, Any>(
+                    "author" to util.currentUser,
+                    "post_name" to postname,
+                    "post_main" to postmain,
+                    "post_category" to findViewById<Spinner>(R.id.post_category).selectedItem.toString(),
+                    "time" to getTime(),
+                    "comment" to ArrayList<MutableMap<String, String>>()
+                )
+                if (statePort == 0) util.posts.add(hashMap)
+                else util.posts.document(intent.getStringExtra("uid")!!).update(hashMap)
+                val intent = Intent(this, SnsActivity::class.java)
+                startActivity(intent)
+            } else Toast.makeText(this, "게시글 이름이나 본문이 비어있을 수 없습니다.", Toast.LENGTH_SHORT).show()
         }
     }
 
