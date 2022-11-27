@@ -54,8 +54,6 @@ class PostActivity : AppCompatActivity() {
             val intent = Intent(this, SnsActivity::class.java)
             startActivity(intent)
         }
-
-
     }
 
     // 시간 가져오는 함수
