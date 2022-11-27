@@ -26,18 +26,10 @@
                 <TextView
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="username"
                     android:textStyle="bold"
-                    android:textSize="14dp" />
-                <TextView
-                    android:id="@+id/post_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:gravity="center"
-                    android:text="2022/xx/xx"
-                    android:textColor="#cdcdcd"
                     android:textSize="14dp" />
             </LinearLayout>
         </LinearLayout>>

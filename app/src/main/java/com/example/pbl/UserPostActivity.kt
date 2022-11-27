@@ -84,7 +84,7 @@ class UserPostActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.username).text = author
             findViewById<TextView>(R.id.post_title).text = it["post_name"].toString()
             findViewById<TextView>(R.id.post_main).text = it["post_main"].toString()
-            findViewById<TextView>(R.id.post_date).text = it["post_date"].toString()
+            findViewById<TextView>(R.id.post_date).text = it["time"].toString()
 
             // 댓글 배치
 
