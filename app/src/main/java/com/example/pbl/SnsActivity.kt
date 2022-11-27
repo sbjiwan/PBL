@@ -46,7 +46,7 @@ class SnsActivity : AppCompatActivity() {
                             post.findViewById<TextView>(R.id.post_title).text = data["post_name"].toString()
                             post.findViewById<TextView>(R.id.post_main).text = data["post_main"].toString()
                             post.findViewById<TextView>(R.id.post_date).text = data["time"].toString()
-                            post.findViewById<TextView>(R.id.post_category).text = "${data["post_category"].toString()}"
+                            post.findViewById<TextView>(R.id.post_category).text = data["post_category"].toString()
                             findViewById<LinearLayout>(R.id.post_list).addView(post);
                         } else if (data["post_category"].toString() == selectedItem) {
                             val post = layoutInflater.inflate(R.layout.post_item, null, false);

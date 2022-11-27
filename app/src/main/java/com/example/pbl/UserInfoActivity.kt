@@ -159,7 +159,7 @@ class UserInfoActivity : AppCompatActivity() {
                             post.findViewById<TextView>(R.id.post_title).text = data["post_name"].toString()
                             post.findViewById<TextView>(R.id.post_main).text = data["post_main"].toString()
                             post.findViewById<TextView>(R.id.post_date).text = data["time"].toString()//시간 추가
-                            //  post.findViewById<TextView>(R.id.post_category).setText("카테고리: ${data["postcategory"].toString()}")
+                            post.findViewById<TextView>(R.id.post_category).text = data["post_category"].toString()
                             findViewById<LinearLayout>(R.id.my_post).addView(post)
                         }
                     }
