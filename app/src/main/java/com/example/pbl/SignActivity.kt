@@ -62,6 +62,7 @@ class SignActivity : AppCompatActivity() {
                                if(task.isSuccessful){
                                    Firebase.firestore.collection("user_pins").document("${id}@sns.com").set(hashMapOf(
                                        "pin_list" to ArrayList<String>(),
+                                       "pined_list" to ArrayList<String>()
                                    ))
                                    Toast.makeText(this,"가입되었습니다.",Toast.LENGTH_SHORT).show()
                                    val intent = Intent(this, LoginActivity::class.java)

@@ -22,6 +22,7 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.ktx.storage
+import org.w3c.dom.Text
 import java.io.ByteArrayOutputStream
 
 
@@ -80,33 +81,52 @@ class UserInfoActivity : AppCompatActivity() {
                 }
             }
         }
+        Firebase.firestore.collection("user_pins").document(userEmail).get().addOnSuccessListener {
+            val pinedList = it["pined_list"] as ArrayList<String>
+            findViewById<TextView>(R.id.userpined).text = "핀 받은 수: ${pinedList.lastIndex + 1}"
+        }
         if (userEmail != Firebase.auth.currentUser?.email.toString()) {
             findViewById<Button>(R.id.handler).text = "핀 하기 / 풀기"
             findViewById<Button>(R.id.handler).setOnClickListener {
                 val pinInfo = Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString())
+                val tPinInfo = Firebase.firestore.collection("user_pins").document(userEmail)
                 pinInfo.get().addOnSuccessListener {
                     val myPinInfo = it["pin_list"] as ArrayList<String>
-                    if (myPinInfo.find { field -> field.equals(userEmail) } == null) {
-                        myPinInfo.add(userEmail)
-                        Toast.makeText(this, "해당 유저를 핀 하였습니다.", Toast.LENGTH_SHORT).show()
-                        finish();
-                        startActivity(intent)
-                    }
-                    else {
-                        myPinInfo.remove(userEmail)
-                        Toast.makeText(this, "해당 유저를 핀 풀었습니다.", Toast.LENGTH_SHORT).show()
-                        finish();
-                        startActivity(intent)
-                    }
+                    if (myPinInfo.find { field -> field == userEmail } == null)  myPinInfo.add(userEmail)
+                    else myPinInfo.remove(userEmail)
                     pinInfo.set(hashMapOf(
                         "pin_list" to myPinInfo,
+                        "pined_list" to it["pined_list"] as ArrayList<String>
+                    ))
+                    finish();
+                    startActivity(intent)
+                }
+                tPinInfo.get().addOnSuccessListener {
+                    val targetPinInfo = it["pined_list"] as ArrayList<String>
+                    if (targetPinInfo.find { field -> field == Firebase.auth.currentUser!!.email.toString() } == null) {
+                        targetPinInfo.add(Firebase.auth.currentUser!!.email.toString())
+                        Toast.makeText(this, "해당 유저를 핀 하였습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                    else {
+                        targetPinInfo.remove(Firebase.auth.currentUser!!.email.toString())
+                        Toast.makeText(this, "해당 유저를 핀 풀었습니다.", Toast.LENGTH_SHORT).show()
+                    }
+                    tPinInfo.set(hashMapOf(
+                        "pin_list" to it["pin_list"] as ArrayList<String>,
+                        "pined_list" to targetPinInfo
                     ))
                 }
+                finish();
+                startActivity(intent)
             }
             findViewById<Button>(R.id.imageSave).visibility = View.GONE
             findViewById<Button>(R.id.logout).visibility = View.GONE
             findViewById<Button>(R.id.withdraw).visibility = View.GONE
             findViewById<Button>(R.id.my_pin).visibility = View.GONE
+            findViewById<Button>(R.id.user_info).setOnClickListener {
+                val intent = Intent(this, UserInfoActivity::class.java)
+                startActivity(intent)
+            }
         } else {
             findViewById<Button>(R.id.handler).setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -171,6 +191,16 @@ class UserInfoActivity : AppCompatActivity() {
                                     )
                                     data.reference.update(postInfo)
                                 }
+                            }
+                        }
+                        Firebase.firestore.collection("user_pins").get().addOnSuccessListener {
+                            for (data in it) {
+                                val pinedData = data["pined_list"] as ArrayList<String>
+                                for (pinedQuery in pinedData) if (pinedQuery == Firebase.auth.currentUser?.email.toString()) pinedData.remove(pinedQuery)
+                                data.reference.set(hashMapOf(
+                                    "pin_list" to data["pin_list"] as ArrayList<String>,
+                                    "pined_list" to pinedData
+                                ))
                             }
                         }
                         Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString()).delete()

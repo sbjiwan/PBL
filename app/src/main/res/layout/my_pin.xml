@@ -30,7 +30,7 @@
             android:fillViewport="true">
 
             <LinearLayout
-                android:id="@+id/my_pin_list"
+                android:id="@+id/pin_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">'

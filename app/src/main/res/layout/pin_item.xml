@@ -24,33 +24,17 @@
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:orientation="vertical">
+
                 <TextView
                     android:id="@+id/username"
                     android:layout_width="wrap_content"
-                    android:layout_height="20dp"
+                    android:layout_height="match_parent"
                     android:gravity="center"
                     android:text="username"
-                    android:textStyle="bold"
-                    android:textSize="14dp" />
-                <TextView
-                    android:id="@+id/post_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="20dp"
-                    android:gravity="center"
-                    android:text="2022/xx/xx"
-                    android:textColor="#cdcdcd"
-                    android:textSize="14dp" />
+                    android:textSize="14dp"
+                    android:textStyle="bold" />
             </LinearLayout>
         </LinearLayout>
-
-        <Button
-            android:id="@+id/un_pin"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:text="핀 풀기"
-            android:textSize="10sp"
-            android:backgroundTint="#FFFFFF"
-            android:textColor="#777777"/>
 
     </LinearLayout>
 
