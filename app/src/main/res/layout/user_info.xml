@@ -5,9 +5,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:background="#7777"
+        />
+
     <Button
         android:id="@+id/handler"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:backgroundTint="#FFFFFF"
         android:textColor="#777777"
@@ -19,13 +30,36 @@
 
     <Button
         android:id="@+id/imageSave"
-        android:layout_width="120dp"
+        android:layout_width="140dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:backgroundTint="#FFFFFF"
         android:text="프로필저장"
         android:textColor="#777777"
         app:layout_constraintStart_toEndOf="@+id/handler"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/logout"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#FFFFFF"
+        android:textColor="#777777"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="80dp"
+        android:text="@string/log_out"
+        app:layout_constraintStart_toEndOf="@+id/imageView"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/withdraw"
+        android:layout_width="140dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="80dp"
+        android:backgroundTint="#FFFFFF"
+        android:text="회원 탈퇴"
+        android:textColor="#777777"
+        app:layout_constraintStart_toEndOf="@+id/logout"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
@@ -36,16 +70,6 @@
         android:layout_marginTop="16dp"
         android:text="userid"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
-
-    <TextView
-        android:id="@+id/pin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="16dp"
-        android:text="핀 받은 수: 0"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
     <Button
@@ -78,40 +102,6 @@
         android:text="sns"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
-
-    <Button
-        android:id="@+id/logout"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
-        android:textColor="#777777"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="80dp"
-        android:text="@string/log_out"
-        app:layout_constraintStart_toEndOf="@+id/imageView"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/withdraw"
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="80dp"
-        android:backgroundTint="#FFFFFF"
-        android:text="회원 탈퇴"
-        android:textColor="#777777"
-        app:layout_constraintStart_toEndOf="@+id/logout"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:background="#7777"
-        />
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -81,10 +81,32 @@ class UserInfoActivity : AppCompatActivity() {
             }
         }
         if (userEmail != Firebase.auth.currentUser?.email.toString()) {
-            findViewById<Button>(R.id.handler).visibility = View.GONE
+            findViewById<Button>(R.id.handler).text = "핀 하기 / 풀기"
+            findViewById<Button>(R.id.handler).setOnClickListener {
+                val pinInfo = Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString())
+                pinInfo.get().addOnSuccessListener {
+                    val myPinInfo = it["pin_list"] as ArrayList<String>
+                    if (myPinInfo.find { field -> field.equals(userEmail) } == null) {
+                        myPinInfo.add(userEmail)
+                        Toast.makeText(this, "해당 유저를 핀 하였습니다.", Toast.LENGTH_SHORT).show()
+                        finish();
+                        startActivity(intent)
+                    }
+                    else {
+                        myPinInfo.remove(userEmail)
+                        Toast.makeText(this, "해당 유저를 핀 풀었습니다.", Toast.LENGTH_SHORT).show()
+                        finish();
+                        startActivity(intent)
+                    }
+                    pinInfo.set(hashMapOf(
+                        "pin_list" to myPinInfo,
+                    ))
+                }
+            }
             findViewById<Button>(R.id.imageSave).visibility = View.GONE
             findViewById<Button>(R.id.logout).visibility = View.GONE
             findViewById<Button>(R.id.withdraw).visibility = View.GONE
+            findViewById<Button>(R.id.my_pin).visibility = View.GONE
         } else {
             findViewById<Button>(R.id.handler).setOnClickListener {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -132,6 +154,7 @@ class UserInfoActivity : AppCompatActivity() {
                     .setMessage("정말로 탈퇴하시겠습니까? (한번 결정한 내용은 되돌릴 수 없습니다.)")
                     .setPositiveButton("네") { dialogInterface: DialogInterface, i: Int ->
                         Firebase.firestore.collection("post_list").get().addOnSuccessListener {
+                            Toast.makeText(this, "만약, '정상적으로 탈퇴되었습니다'라는 문구가 안나온다면, 재 로그인 하셨다 다시 탈퇴를 진행해주세요.", Toast.LENGTH_SHORT).show()
                             for (data in it) {
                                 if (data["author"].toString() == Firebase.auth.currentUser?.email.toString()) data.reference.delete()
                                 else {
@@ -150,6 +173,7 @@ class UserInfoActivity : AppCompatActivity() {
                                 }
                             }
                         }
+                        Firebase.firestore.collection("user_pins").document(Firebase.auth.currentUser?.email.toString()).delete()
                         FirebaseStorage.getInstance().getReference().child(Firebase.auth.currentUser?.email.toString() + "_profile").delete()
                         FirebaseAuth.getInstance().currentUser!!.delete().addOnSuccessListener {
                             Toast.makeText(this, "정상적으로 탈퇴되었습니다.", Toast.LENGTH_SHORT).show()
@@ -161,11 +185,10 @@ class UserInfoActivity : AppCompatActivity() {
                     .setNegativeButton("아니오") { dialogInterface: DialogInterface, i: Int -> }
                     .show()
             }
-        }
-
-        findViewById<Button>(R.id.my_pin).setOnClickListener {
-            val intent = Intent(this, MyPinActivity::class.java)
-            startActivity(intent)
+            findViewById<Button>(R.id.my_pin).setOnClickListener {
+                val intent = Intent(this, MyPinActivity::class.java)
+                startActivity(intent)
+            }
         }
 
         findViewById<Button>(R.id.sns).setOnClickListener {
