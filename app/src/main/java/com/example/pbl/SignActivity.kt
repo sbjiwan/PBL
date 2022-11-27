@@ -27,19 +27,19 @@ class SignActivity : AppCompatActivity() {
             binding.passwordEdit.text.clear()
             binding.passwordConfirmed.text.clear()
             var verifiedGo = true
-            if (id.isEmpty() || 20 < id.length){
+            if (id.isEmpty() || 20 < id.length) {
                 Toast.makeText(this,"올바른 id를 입력해주세요",Toast.LENGTH_SHORT).show()
                 verifiedGo = false
-            } else if(password.isEmpty()){
+            } else if (password.isEmpty()) {
                 Toast.makeText(this,"password를 입력해주세요",Toast.LENGTH_SHORT).show()
                 verifiedGo = false
-            } else if (passwordConfirm.isEmpty()){
+            } else if (passwordConfirm.isEmpty()) {
                 Toast.makeText(this,"password확인을 입력해주세요",Toast.LENGTH_SHORT).show()
                 verifiedGo = false
-            } else if (password != passwordConfirm){
+            } else if (password != passwordConfirm) {
                 Toast.makeText(this,"비밀번호를 똑같이 입력해 주세요",Toast.LENGTH_SHORT).show()
                 verifiedGo = false
-            } else if (password.length < 6){
+            } else if (password.length < 6) {
                 Toast.makeText(this,"6자리 이상 입력해주세요",Toast.LENGTH_SHORT).show()
                 verifiedGo = false
             }
