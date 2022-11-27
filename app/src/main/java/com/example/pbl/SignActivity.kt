@@ -55,7 +55,7 @@ class SignActivity : AppCompatActivity() {
                             val intent = Intent(this, LoginActivity::class.java)
                             intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
                             startActivity(intent)
-                        } else Toast.makeText(this,"가입 실패하였습니다. 올바른 아이디 형식으로 써주세요.",Toast.LENGTH_SHORT).show()
+                        } else Toast.makeText(this,"가입 실패하였습니다. 아마도 이미 존재하는 아이디 일 수 있습니다.",Toast.LENGTH_SHORT).show()
                    }
                }
        }
