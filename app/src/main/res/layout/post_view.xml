@@ -51,7 +51,7 @@
                     android:textColor="#cdcdcd"
                     android:textSize="14dp" />
             </LinearLayout>
-        </LinearLayout>>
+        </LinearLayout>
 
         <Button
             android:id="@+id/edit"
@@ -63,6 +63,7 @@
             android:textSize="10sp" />
         <Button
             android:id="@+id/del"
+            android:layout_marginLeft="10dp"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="@string/del"
@@ -89,15 +90,28 @@
         android:textSize="16dp"
         />
 
-    <Button
-        android:id="@+id/comment"
-        android:layout_marginLeft="320dp"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:backgroundTint="#FFFFFF"
-        android:text="댓글 달기"
-        android:textColor="#777777"
-        android:textSize="10sp" />
+        android:layout_height="40dp">
+        <Button
+            android:id="@+id/reload"
+            android:layout_marginLeft="210dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            android:text="게시글 새로고침"
+            android:textColor="#777777"
+            android:textSize="10sp" />
+        <Button
+            android:id="@+id/comment"
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="#FFFFFF"
+            android:text="댓글 달기"
+            android:textColor="#777777"
+            android:textSize="10sp" />
+    </LinearLayout>
 
     <ScrollView
         android:layout_width="match_parent"

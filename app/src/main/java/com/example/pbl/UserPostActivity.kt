@@ -154,6 +154,11 @@ class UserPostActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        findViewById<Button>(R.id.reload).setOnClickListener {
+            finish()
+            startActivity(intent)
+        }
+
         findViewById<Button>(R.id.comment).setOnClickListener {
             val intent = Intent(this,CommentActivity::class.java)
             intent.putExtra("uid", documentuid)

@@ -34,7 +34,8 @@ class PostActivity : AppCompatActivity() {
                 findViewById<EditText>(R.id.mainfield).setText(it["post_main"].toString())
             }
             statePort = 1
-        };
+        }
+
         findViewById<Button>(R.id.post_add).setOnClickListener {
             val postInfo = mutableMapOf<String, Any>(
                 "author" to auth.currentUser?.email.toString(),
