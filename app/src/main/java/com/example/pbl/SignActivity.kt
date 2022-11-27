@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pbl.databinding.SignInBinding
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
@@ -43,7 +44,7 @@ class SignActivity : AppCompatActivity() {
                 verifiedGo = false
             }
             if(verifiedGo){
-                MyApplication.auth.createUserWithEmailAndPassword("${id}@sns.com",password)
+                Firebase.auth.createUserWithEmailAndPassword("${id}@sns.com",password)
                     .addOnCompleteListener(this){task ->
                         if(task.isSuccessful){
                             Firebase.firestore.collection("user_pins").document("${id}@sns.com").set(hashMapOf(

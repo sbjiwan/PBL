@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pbl.databinding.LogInBinding
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -27,7 +28,7 @@ class LoginActivity : AppCompatActivity() {
 
             binding.idInput.text.clear()
             binding.passwordInput.text.clear()
-            MyApplication.auth.signInWithEmailAndPassword("${id}@sns.com",password)
+            Firebase.auth.signInWithEmailAndPassword("${id}@sns.com",password)
                 .addOnCompleteListener(this){ task->
                     if(task.isSuccessful){
                         val intent = Intent(this, UserInfoActivity::class.java)

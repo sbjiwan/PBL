@@ -31,7 +31,7 @@ import kotlin.properties.Delegates
 
 
 class UserInfoActivity : AppCompatActivity() {
-    val util = FirebaseUtil()
+    private val util = FirebaseUtil()
     private lateinit var userEmail : String
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,6 +79,9 @@ class UserInfoActivity : AppCompatActivity() {
                             }
                         }
                     }
+                    
+                    // 유저 정보 삭제
+                    
                     util.pins.get().addOnSuccessListener {
                         for (data in it) {
                             val pinedData = data["pined_list"] as ArrayList<String>
@@ -197,6 +200,8 @@ class UserInfoActivity : AppCompatActivity() {
                                 "pin_list" to myPinInfo,
                                 "pined_list" to it["pined_list"] as ArrayList<String>
                             ))
+                            finish()
+                            startActivity(intent)
                         }
 
                         // 유저 정보창의 유저의 받은 핀 수정
@@ -215,8 +220,6 @@ class UserInfoActivity : AppCompatActivity() {
                                 "pined_list" to targetPinInfo
                             ))
                         }
-                        finish();
-                        startActivity(intent)
                     }
 
                     // 내 정보 버튼 활성화
