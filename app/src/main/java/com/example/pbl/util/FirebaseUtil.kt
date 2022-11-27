@@ -1,4 +1,4 @@
-package com.example.pbl.Utils
+package com.example.pbl.util
 
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.ktx.firestore
