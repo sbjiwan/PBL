@@ -11,7 +11,7 @@ import kotlin.collections.ArrayList
 import kotlin.properties.Delegates
 
 class PostActivity : AppCompatActivity() {
-    val util = FirebaseUtil()
+    private val util = FirebaseUtil()
     private var statePort by Delegates.notNull<Int>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

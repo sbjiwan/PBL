@@ -11,7 +11,7 @@ import com.example.pbl.util.FirebaseUtil
 import com.google.android.gms.tasks.OnCompleteListener
 
 class MyPinActivity : AppCompatActivity() {
-    val util = FirebaseUtil()
+    private val util = FirebaseUtil()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.my_pin)

@@ -10,7 +10,7 @@ import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.firestore.Query
 
 class SnsActivity : AppCompatActivity() {
-    val util = FirebaseUtil()
+    private val util = FirebaseUtil()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.sns)
