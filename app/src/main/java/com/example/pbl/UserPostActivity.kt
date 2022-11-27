@@ -155,7 +155,6 @@ class UserPostActivity : AppCompatActivity() {
         }
 
         findViewById<Button>(R.id.reload).setOnClickListener {
-            finish()
             startActivity(intent)
         }
 
