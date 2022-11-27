@@ -40,7 +40,7 @@ class UserInfoActivity : AppCompatActivity() {
         // lateinit 변수 초기화
 
         userEmail =
-            if (intent.getStringExtra("user") == null) Firebase.auth.currentUser?.email.toString()
+            if (intent.getStringExtra("user") == null) util.currentUser
             else intent.getStringExtra("user")!!
 
         // 로그아웃 버튼
@@ -258,8 +258,7 @@ class UserInfoActivity : AppCompatActivity() {
                         val baos = ByteArrayOutputStream()
                         bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
                         val data = baos.toByteArray()
-                        var uploadTask = FirebaseStorage.getInstance().getReference().child(Firebase.auth.currentUser?.email.toString() + "_profile").putBytes(data)
-                        uploadTask
+                        util.instance.reference.child(util.currentUser + "_profile").putBytes(data)
                             .addOnFailureListener {
                                 Toast.makeText(this, "업로드 실패", Toast.LENGTH_LONG).show()
                             }.addOnSuccessListener { taskSnapshot ->

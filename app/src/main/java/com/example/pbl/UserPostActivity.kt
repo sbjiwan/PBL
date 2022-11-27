@@ -33,7 +33,7 @@ class UserPostActivity : AppCompatActivity() {
 
             // 만약 게시글 작성자가 내가 아니라면
 
-            if (author != Firebase.auth.currentUser?.email.toString()) {
+            if (author != util.currentUser) {
                 findViewById<Button>(R.id.edit).visibility = View.GONE
                 findViewById<Button>(R.id.del).visibility = View.GONE
 
@@ -56,7 +56,7 @@ class UserPostActivity : AppCompatActivity() {
                         .setTitle("경고")
                         .setMessage("정말로 게시글을 삭제하시겠습니까?")
                         .setPositiveButton("네") {dialogInterface: DialogInterface, i: Int ->
-                            Firebase.firestore.collection("post_list").document(documentuid).delete()
+                            util.posts.document(documentuid).delete()
                             val intent = Intent(this, UserInfoActivity::class.java)
                             startActivity(intent)
                         }
@@ -145,7 +145,7 @@ class UserPostActivity : AppCompatActivity() {
                                         "author" to comment["author"].toString(),
                                         "comment" to comment["comment"].toString()
                                     ))
-                                    Firebase.firestore.collection("post_list").document(documentuid).update(hashMapOf<String, Any>(
+                                    util.posts.document(documentuid).update(hashMapOf<String, Any>(
                                         "author" to domdata["author"] as String,
                                         "post_name" to domdata["post_name"] as String,
                                         "post_main" to domdata["post_main"] as String,
@@ -177,7 +177,7 @@ class UserPostActivity : AppCompatActivity() {
                                         "author" to comment["author"].toString(),
                                         "comment" to comment["comment"].toString()
                                     ))
-                                    Firebase.firestore.collection("post_list").document(documentuid).update(hashMapOf<String, Any>(
+                                    util.posts.document(documentuid).update(hashMapOf<String, Any>(
                                         "author" to domdata["author"] as String,
                                         "post_name" to domdata["post_name"] as String,
                                         "post_main" to domdata["post_main"] as String,

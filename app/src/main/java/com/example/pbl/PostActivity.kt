@@ -24,7 +24,7 @@ class PostActivity : AppCompatActivity() {
         statePort =
             if (intent.getStringExtra("uid") == null) 0;
             else {
-                Firebase.firestore.collection("post_list").document(intent.getStringExtra("uid")!!).get().addOnSuccessListener {
+                util.posts.document(intent.getStringExtra("uid")!!).get().addOnSuccessListener {
                     findViewById<EditText>(R.id.namefield).setText(it["post_name"].toString())
                     findViewById<EditText>(R.id.mainfield).setText(it["post_main"].toString())
                 }
