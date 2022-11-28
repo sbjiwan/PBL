@@ -67,7 +67,7 @@
     <TextView
         android:id="@+id/post_main"
         android:layout_width="match_parent"
-        android:layout_height="350dp"
+        android:layout_height="250dp"
         android:text="main"
         android:textSize="16dp"
         />
