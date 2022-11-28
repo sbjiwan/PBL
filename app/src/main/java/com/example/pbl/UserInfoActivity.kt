@@ -29,6 +29,18 @@ class UserInfoActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.user_info)
 
+        // 버전 체크
+
+        util.appData.document("default").get().addOnSuccessListener {
+            if ("1.3.5" != it["version"] as String) {
+                Toast.makeText(this, "새로운 버전이 업데이트되었습니다. 전 업데이트를 해 주세요.", Toast.LENGTH_SHORT).show()
+                Firebase.auth.signOut()
+                val intent = Intent(this,MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+            }
+        }
+
         // lateinit 변수 초기화
 
         userEmail =

@@ -67,13 +67,15 @@
     <TextView
         android:id="@+id/post_main"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="220dp"
         android:text="main"
+        android:background="#F7F7F7"
         android:textSize="16dp"
         />
     <TextView
         android:background="#7777"
         android:textSize="1dp"
+        android:layout_marginTop="30dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
