@@ -52,6 +52,7 @@ class UserPostActivity : AppCompatActivity() {
                         .setMessage("정말로 게시글을 삭제하시겠습니까?")
                         .setPositiveButton("네") {dialogInterface: DialogInterface, i: Int ->
                             util.posts.document(documentuid).delete()
+                            util.instance.reference.child(documentuid + "_image").delete()
                             val intent = Intent(this, UserInfoActivity::class.java)
                             startActivity(intent)
                         }
@@ -85,6 +86,18 @@ class UserPostActivity : AppCompatActivity() {
             findViewById<TextView>(R.id.post_title).text = it["post_name"].toString()
             findViewById<TextView>(R.id.post_main).text = it["post_main"].toString()
             findViewById<TextView>(R.id.post_date).text = it["time"].toString()
+
+            // 게시글의 이미지가 있는지 확인
+
+            util.instance.getReference(documentuid + "_image")
+                .downloadUrl
+                .addOnCompleteListener(OnCompleteListener { task ->
+                    if(task.isSuccessful){
+                        Glide.with(this)
+                            .load(task.result)
+                            .into(findViewById(R.id.post_image))
+                    }
+                })
 
             // 댓글 배치
 

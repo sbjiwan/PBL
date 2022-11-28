@@ -57,7 +57,10 @@ class UserInfoActivity : AppCompatActivity() {
                     util.posts.get().addOnSuccessListener {
                         Toast.makeText(this, "'정상적으로 탈퇴되었습니다'라는 문구가 안나오면, 재 로그인 후 탈퇴를 다시 진행해주세요.", Toast.LENGTH_SHORT).show()
                         for (data in it) {
-                            if (data["author"].toString() == util.currentUser) data.reference.delete()
+                            if (data["author"].toString() == util.currentUser) {
+                                data.reference.delete()
+                                util.instance.reference.child(data.reference.id + "_image").delete()
+                            }
                             else {
                                 val comments = data["comment"] as ArrayList<MutableMap<String, String>>
                                 for (comment in comments) if (comment["author"].toString() == util.currentUser) comments.remove(comment)
@@ -142,6 +145,15 @@ class UserInfoActivity : AppCompatActivity() {
                                         Glide.with(this)
                                             .load(task.result)
                                             .into(post.findViewById(R.id.user_profile))
+                                    }
+                                })
+                            util.instance.getReference(data.id + "_image")
+                                .downloadUrl
+                                .addOnCompleteListener(OnCompleteListener { task ->
+                                    if(task.isSuccessful){
+                                        Glide.with(this)
+                                            .load(task.result)
+                                            .into(post.findViewById(R.id.post_image))
                                     }
                                 })
 
