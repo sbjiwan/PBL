@@ -1,9 +1,5 @@
 <resources>
     <string name="app_name">PBL</string>
-
-    <string name="naver_login">네이버계정으로 로그인</string>
-    <string name="kakao_login">카카오계정으로 로그인</string>
-    <string name="google_login">구글계정으로 로그인</string>
     <string name="id">abc123</string>
     <string name="password">6자 이상의 비밀번호</string>
     <string name="ck_password">비밀번호 확인</string>
@@ -21,17 +17,19 @@
     <string-array name="post_category">
         <item>[없음]</item>
         <item>[게임]</item>
+        <item>[곤충]</item>
         <item>[교육]</item>
         <item>[국내 중심]</item>
+        <item>[동물]</item>
         <item>[서적]</item>
         <item>[스포츠]</item>
+        <item>[식물]</item>
         <item>[신문고]</item>
         <item>[연애]</item>
         <item>[애니메이션]</item>
         <item>[음악]</item>>
         <item>[이슈]</item>
         <item>[자동차]</item>
-        <item>[자연]</item>
         <item>[잡담]</item>
         <item>[취미]</item>
         <item>[학업]</item>
