@@ -68,6 +68,15 @@ class SnsActivity : AppCompatActivity() {
                                             .into(post.findViewById(R.id.user_profile))
                                     }
                                 })
+                            util.instance.getReference(data.id + "_image")
+                                .downloadUrl
+                                .addOnCompleteListener(OnCompleteListener { task ->
+                                    if(task.isSuccessful){
+                                        Glide.with(view!!.context)
+                                            .load(task.result)
+                                            .into(post.findViewById(R.id.post_image))
+                                    }
+                                })
                             post.setOnClickListener {
                                 val intent = Intent(view!!.context, UserPostActivity::class.java)
                                 intent.putExtra("uid", data.id)
