@@ -32,7 +32,7 @@ class UserInfoActivity : AppCompatActivity() {
         // 버전 체크
 
         util.appData.document("default").get().addOnSuccessListener {
-            if ("1.3.5" != it["version"] as String) {
+            if ("1.3.6" != it["version"] as String) {
                 Toast.makeText(this, "새로운 버전이 업데이트되었습니다. 업데이트를 해 주세요.", Toast.LENGTH_SHORT).show()
                 Firebase.auth.signOut()
                 val intent = Intent(this,MainActivity::class.java)
